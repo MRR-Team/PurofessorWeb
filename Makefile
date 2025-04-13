@@ -1,21 +1,26 @@
-# Makefile for PurofessorWeb project
-
-# Komendy do uruchomienia
 .PHONY: install dev build serve
 
-# Zainstalowanie zależności
 install:
 	npm install
 
-# Budowanie i uruchamianie aplikacji w trybie deweloperskim
 dev:
 	npm run build
 	npm run dev
 
-# Budowanie projektu
 build:
 	npm run build
 
-# Uruchomienie serwera produkcyjnego
 serve:
 	npm run serve
+
+up:
+	docker-compose up -d --build
+
+down:
+	docker-compose down
+
+logs:
+	docker-compose logs -f
+
+frontend:
+	docker-compose exec frontend sh
