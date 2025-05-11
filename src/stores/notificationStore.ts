@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import { NotificationRepository } from '@/repositories/NotificationRepository'
-import type { Notification } from '@/models/Notification'
+import type { INotification } from '@/interfaces/INotification'
 
 export const useNotificationStore = defineStore('notifications', {
   state: () => ({
-    notifications: [] as Notification[],
+    notifications: [] as INotification[],
     isLoading: false,
     error: null as string | null
   }),
@@ -25,12 +25,12 @@ export const useNotificationStore = defineStore('notifications', {
       }
     },
 
-    getById(id: number): Notification | undefined {
+    getById(id: number): INotification | undefined {
       return this.notifications.find(n => n.id === id)
     },
 
-    getCritical(): Notification[] {
-      return this.notifications.filter(n => n.isCritical())
+    getCritical(): INotification[] {
+      return this.notifications.filter(n => n.type === 'danger' || n.type === 'warning')
     }
   }
 })

@@ -1,13 +1,14 @@
 import { Notification } from '@/models/Notification'
+import type { INotification } from '@/interfaces/INotification'
 
 export class NotificationFactory {
-  static fromApi(data: any): Notification {
+  static fromApi(data: INotification): Notification {
     return new Notification(
       data.id,
       data.title,
       data.content,
       data.type,
-      data.created_at ?? data.createdAt ?? new Date().toISOString()
+      data.createdAt ?? data.created_at ?? new Date().toISOString()
     )
   }
 }

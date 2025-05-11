@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import { ChampionRepository } from '@/repositories/ChampionRepository'
-import type { Champion } from '@/models/Champion'
+import type { IChampion } from '@/interfaces/IChampion'
 
 export const useChampionStore = defineStore('champions', {
   state: () => ({
-    champions: [] as Champion[],
+    champions: [] as IChampion[],
     isLoading: false,
     error: null as string | null
   }),
@@ -25,7 +25,7 @@ export const useChampionStore = defineStore('champions', {
       }
     },
 
-    getChampionById(id: number): Champion | undefined {
+    getChampionById(id: number): IChampion | undefined {
       return this.champions.find(c => c.id === id)
     }
   }
