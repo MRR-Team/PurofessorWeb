@@ -1,64 +1,48 @@
-<!-- src/views/RegisterView.vue -->
 <template>
-  <div class="register-page">
-    <h1>Rejestracja</h1>
-
-    <form @submit.prevent="register">
-      <label>
-        Email:
-        <input v-model="email" type="email" required />
-      </label>
-
-      <label>
-        Hasło:
-        <input v-model="password" type="password" required />
-      </label>
-
-      <label>
-        Powtórz hasło:
-        <input v-model="confirmPassword" type="password" required />
-      </label>
-
-      <p v-if="error" class="error">{{ error }}</p>
-
-      <button type="submit">Zarejestruj się</button>
+  <div class="max-w-md mx-auto mt-10 p-4 border rounded">
+    <h1 class="text-xl font-bold mb-4">Rejestracja</h1>
+    <form @submit.prevent="handleRegister">
+      <BaseInput v-model="name" type="text" placeholder="Imię" class="mb-4" />
+      <BaseInput v-model="email" type="email" placeholder="Email" class="mb-4" />
+      <BaseInput v-model="password" type="password" placeholder="Hasło" class="mb-4" />
+      <BaseInput v-model="confirmPassword" type="password" placeholder="Potwierdź hasło" class="mb-4" />
+      <BaseButton type="submit">Zarejestruj</BaseButton>
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { register } from '@/services/authService'
+import BaseInput from '@/components/shared/BaseInput.vue'
+import BaseButton from '@/components/shared/BaseButton.vue'
 
+const name = ref('')
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
-const error = ref('')
 
-function register() {
+const router = useRouter()
+
+const handleRegister = async () => {
   if (password.value !== confirmPassword.value) {
-    error.value = 'Hasła się nie zgadzają'
+    alert('Hasła się nie zgadzają')
     return
   }
 
-  error.value = ''
-  console.log('Register:', email.value, password.value)
-  // TODO: tutaj będzie odwołanie do api marcel backend dzwoni
+  try {
+    await register({
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      password_confirmation: confirmPassword.value
+    })
+    alert('Rejestracja udana. Zaloguj się.')
+    router.push('/login')
+  } catch (err) {
+    console.error('Rejestracja nieudana:', err)
+    alert('Błąd rejestracji')
+  }
 }
 </script>
-
-<style scoped>
-.register-page {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.error {
-  color: red;
-  font-weight: bold;
-}
-</style>
