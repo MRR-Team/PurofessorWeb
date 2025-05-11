@@ -39,6 +39,16 @@ const routes: RouteRecordRaw[] = [
     meta: { public: true }
   },
   {
+    path: '/notifications',
+    component: () => import('@/views/NotificationListView.vue'),
+    meta: { public: true }
+  },
+  {
+    path: '/profile',
+    component: () => import('@/views/ProfileView.vue'),
+    meta: { requiresAuth: true, roles: ['user', 'admin'] }
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/login'
   }
