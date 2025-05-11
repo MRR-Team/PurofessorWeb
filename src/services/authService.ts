@@ -1,37 +1,37 @@
-import axios from './axios'
+import api from './axios'
+import { UserFactory } from '@/factories/UserFactory'
+import type { User } from '@/models/User'
 
-interface LoginPayload {
+// Typy
+export interface LoginPayload {
   email: string
   password: string
 }
 
-interface LoginResponse {
-  token: string
-  user: {
-    id: number
-    name: string
-    email: string
-    role: string
-  }
-}
-
-interface RegisterPayload {
+export interface RegisterPayload {
   name: string
   email: string
   password: string
   password_confirmation: string
 }
 
+// Login
+export async function login(payload: LoginPayload): Promise<{ token: string; user: User }> {
+  const response = await api.post('/login', payload)
+  const { token, user } = response.data
+
+  return {
+    token,
+    user: UserFactory.fromApi(user)
+  }
+}
+
+// Register
 export async function register(payload: RegisterPayload): Promise<void> {
-  await axios.post('/register', payload)
+  await api.post('/register', payload)
 }
+
+// Reset Password
 export async function resetPassword(email: string): Promise<void> {
-  await axios.post('/forgot-password', { email })
-}
-export async function login(payload: LoginPayload): Promise<LoginResponse> {
-  const response = await axios.post<LoginResponse>(
-    'http://localhost:8000/api/login', // Zmień jak backend ustali endpoint
-    payload
-  )
-  return response.data
+  await api.post('/forgot-password', { email })
 }
