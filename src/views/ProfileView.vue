@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
-import { UserRepository } from '@/repositories/UserRepository'
+import { updateProfile } from '@/services/userService'
 import BaseInput from '@/components/shared/BaseInput.vue'
 import BaseButton from '@/components/shared/BaseButton.vue'
 
@@ -33,11 +33,7 @@ async function handleSave() {
   error.value = null
 
   try {
-    const updatedUser = await UserRepository.update(user.id, {
-      name: name.value,
-      email: email.value
-    })
-    store.setUser(updatedUser, store.token)
+    await updateProfile(name.value, email.value)
     success.value = true
   } catch (e) {
     console.error(e)

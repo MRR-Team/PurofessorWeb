@@ -23,13 +23,14 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useChampionStore } from '@/stores/championStore'
+import { fetchChampions } from '@/services/championService'
 
 const store = useChampionStore()
 const { champions, isLoading, error } = store
 
 onMounted(() => {
   if (!champions.length) {
-    store.fetchChampions()
+    fetchChampions()
   }
 })
 </script>

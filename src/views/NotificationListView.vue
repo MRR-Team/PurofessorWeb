@@ -30,13 +30,14 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useNotificationStore } from '@/stores/notificationStore'
+import { fetchNotifications } from '@/services/notificationService'
 
 const store = useNotificationStore()
 const { notifications, isLoading, error } = store
 
 onMounted(() => {
   if (!notifications.length) {
-    store.fetchNotifications()
+    fetchNotifications()
   }
 })
 </script>
