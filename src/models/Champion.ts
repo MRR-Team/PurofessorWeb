@@ -1,4 +1,6 @@
-export class Champion {
+import type { IChampion } from '@/interfaces/IChampion'
+
+export class Champion implements IChampion {
   constructor(
     public id: number,
     public name: string,

@@ -1,4 +1,6 @@
-export class User {
+import type { IUser } from '@/interfaces/IUser'
+
+export class User implements IUser {
   constructor(
     public id: number,
     public name: string,

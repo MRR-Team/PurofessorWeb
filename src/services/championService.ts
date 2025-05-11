@@ -1,7 +1,7 @@
 import { useChampionStore } from '@/stores/championStore'
 import { ChampionRepository } from '@/repositories/ChampionRepository'
 
-export const fetchChampions = async () => {
+export async function fetchChampions() {
   const store = useChampionStore()
   store.isLoading = true
   store.error = null
@@ -14,4 +14,8 @@ export const fetchChampions = async () => {
   } finally {
     store.isLoading = false
   }
+}
+
+export const championService = {
+  fetchChampions
 }
