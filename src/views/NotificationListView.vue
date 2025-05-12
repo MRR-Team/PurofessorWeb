@@ -19,7 +19,9 @@
       >
         <div class="flex justify-between items-center">
           <h2 class="font-semibold">{{ notification.title }}</h2>
-          <span class="text-sm text-gray-500">{{ notification.getFormattedDate() }}</span>
+          <span class="text-sm text-gray-500">
+            {{ notification.getFormattedDate() }}
+          </span>
         </div>
         <p class="text-gray-700 mt-2">{{ notification.shortPreview() }}</p>
       </div>
@@ -30,20 +32,22 @@
 <script setup lang="ts">
 import { onMounted, computed } from 'vue'
 import { useNotificationStore } from '@/stores/notificationStore'
-import { fetchNotifications } from '@/services/notificationService'
 import { Notification } from '@/models/Notification'
 
 const store = useNotificationStore()
-const { notifications, isLoading, error } = store
+const { notifications, isLoading, error, fetchNotifications } = store
 
 const notificationModels = computed(() =>
-  notifications.map(n => new Notification(
-    n.id,
-    n.title,
-    n.content,
-    n.type,
-    n.createdAt ?? n.created_at ?? new Date().toISOString()
-  ))
+  notifications.map(
+    n =>
+      new Notification(
+        n.id,
+        n.title,
+        n.content,
+        n.type,
+        n.createdAt ?? n.created_at ?? new Date().toISOString()
+      )
+  )
 )
 
 onMounted(() => {

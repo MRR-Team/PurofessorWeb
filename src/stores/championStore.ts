@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { loadChampions, loadChampionById } from '@/services/championService'
+import { championService } from '@/services/championService'
 import { toRawChampion } from '@/utils/toRawChampion'
 import type { IChampion } from '@/interfaces/IChampion'
 
@@ -16,11 +16,15 @@ export const useChampionStore = defineStore('champions', {
       this.error = null
 
       try {
-        const champions = await loadChampions()
+        const champions = await championService.loadChampions()
         this.champions = champions.map(toRawChampion)
-      } catch (err) {
-        console.error('Błąd pobierania championów:', err)
-        this.error = 'Nie udało się pobrać championów'
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error('Błąd pobierania championów:', err.message)
+          this.error = err.message
+        } else {
+          this.error = 'Nie udało się pobrać championów'
+        }
       } finally {
         this.isLoading = false
       }
@@ -31,11 +35,11 @@ export const useChampionStore = defineStore('champions', {
       if (cached) return cached
 
       try {
-        const champion = await loadChampionById(id)
+        const champion = await championService.loadChampionById(id)
         const raw = toRawChampion(champion)
         this.champions.push(raw)
         return raw
-      } catch (err) {
+      } catch (err: unknown) {
         console.error('Nie udało się pobrać championa o ID:', id)
         return undefined
       }

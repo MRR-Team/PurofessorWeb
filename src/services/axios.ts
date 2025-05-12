@@ -1,11 +1,16 @@
 import axios from 'axios'
 import type { InternalAxiosRequestConfig } from 'axios'
 
-const instance = axios.create({
-  baseURL: 'http://localhost:8000/api'
+const api = axios.create({
+  baseURL: 'http://localhost:8000/api',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  },
+  withCredentials: false
 })
 
-instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem('token')
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`
@@ -13,4 +18,4 @@ instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return config
 })
 
-export default instance
+export default api
