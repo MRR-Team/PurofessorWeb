@@ -78,11 +78,21 @@ async function handleSave() {
 
   if (!validate()) return
 
-  await store.updateProfile(name.value, email.value)
-  if (!store.error) {
-    success.value = true
-  } else {
-    error.value = store.error
+  try {
+    await store.updateProfile(name.value, email.value)
+
+    if (!store.error) {
+      success.value = true
+    } else {
+      error.value = store.error
+    }
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      console.error(e.message)
+      error.value = e.message
+    } else {
+      error.value = 'Wystąpił nieznany błąd.'
+    }
   }
 }
 </script>

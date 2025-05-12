@@ -3,11 +3,17 @@ import { championService } from '@/services/championService'
 import { toRawChampion } from '@/utils/toRawChampion'
 import type { IChampion } from '@/interfaces/IChampion'
 
+type State = {
+  champions: IChampion[]
+  isLoading: boolean
+  error: string | null
+}
+
 export const useChampionStore = defineStore('champions', {
-  state: () => ({
-    champions: [] as IChampion[],
+  state: (): State => ({
+    champions: [],
     isLoading: false,
-    error: null as string | null
+    error: null
   }),
 
   actions: {
@@ -19,12 +25,7 @@ export const useChampionStore = defineStore('champions', {
         const champions = await championService.loadChampions()
         this.champions = champions.map(toRawChampion)
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error('Błąd pobierania championów:', err.message)
-          this.error = err.message
-        } else {
-          this.error = 'Nie udało się pobrać championów'
-        }
+        this.error = err instanceof Error ? err.message : 'Nie udało się pobrać championów'
       } finally {
         this.isLoading = false
       }

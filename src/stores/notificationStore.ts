@@ -3,11 +3,17 @@ import { notificationService } from '@/services/notificationService'
 import { toRawNotification } from '@/utils/toRawNotification'
 import type { INotification } from '@/interfaces/INotification'
 
+type State = {
+  notifications: INotification[]
+  isLoading: boolean
+  error: string | null
+}
+
 export const useNotificationStore = defineStore('notifications', {
-  state: () => ({
-    notifications: [] as INotification[],
+  state: (): State => ({
+    notifications: [],
     isLoading: false,
-    error: null as string | null
+    error: null
   }),
 
   actions: {
