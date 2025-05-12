@@ -7,7 +7,7 @@
 
     <div v-else class="space-y-4">
       <div
-        v-for="notification in notifications"
+        v-for="notification in notificationModels"
         :key="notification.id"
         class="border-l-4 p-4 rounded shadow bg-white"
         :class="{
@@ -28,12 +28,23 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useNotificationStore } from '@/stores/notificationStore'
 import { fetchNotifications } from '@/services/notificationService'
+import { Notification } from '@/models/Notification'
 
 const store = useNotificationStore()
 const { notifications, isLoading, error } = store
+
+const notificationModels = computed(() =>
+  notifications.map(n => new Notification(
+    n.id,
+    n.title,
+    n.content,
+    n.type,
+    n.createdAt ?? n.created_at ?? new Date().toISOString()
+  ))
+)
 
 onMounted(() => {
   if (!notifications.length) {

@@ -1,43 +1,88 @@
 <template>
-  <div class="max-w-md mx-auto p-6">
+  <div class="max-w-md mx-auto p-6 border rounded shadow bg-white">
     <h1 class="text-xl font-bold mb-4">Twój profil</h1>
 
     <form @submit.prevent="handleSave">
-      <BaseInput v-model="name" type="text" placeholder="Imię" class="mb-4" />
-      <BaseInput v-model="email" type="email" placeholder="Email" class="mb-4" />
-      <BaseButton type="submit">Zapisz zmiany</BaseButton>
+      <BaseInput
+        v-model="name"
+        type="text"
+        placeholder="Imię"
+        class="mb-4"
+      />
+      <BaseInput
+        v-model="email"
+        type="email"
+        placeholder="Email"
+        class="mb-4"
+      />
+      <BaseButton :disabled="isLoading" type="submit">
+        {{ isLoading ? 'Zapisuję...' : 'Zapisz zmiany' }}
+      </BaseButton>
     </form>
 
-    <p class="text-sm text-green-600 mt-4" v-if="success">Zapisano pomyślnie.</p>
-    <p class="text-sm text-red-600 mt-4" v-if="error">{{ error }}</p>
+    <p v-if="success" class="text-sm text-green-600 mt-4">
+      Zapisano pomyślnie ✅
+    </p>
+    <p v-if="error" class="text-sm text-red-600 mt-4">
+      {{ error }}
+    </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useUserStore } from '@/stores/userStore'
-import { updateProfile } from '@/services/userService'
 import BaseInput from '@/components/shared/BaseInput.vue'
 import BaseButton from '@/components/shared/BaseButton.vue'
 
 const store = useUserStore()
-const user = store.user!
+const { user, isLoading } = store
 
-const name = ref(user.name)
-const email = ref(user.email)
-const success = ref(false)
+const name = ref('')
+const email = ref('')
 const error = ref<string | null>(null)
+const success = ref(false)
+
+onMounted(() => {
+  if (user) {
+    name.value = user.name
+    email.value = user.email
+  }
+})
+
+watch(() => store.user, updated => {
+  if (updated) {
+    name.value = updated.name
+    email.value = updated.email
+  }
+})
+
+function validate(): boolean {
+  if (!name.value.trim()) {
+    error.value = 'Imię jest wymagane.'
+    return false
+  }
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!email.value.trim() || !emailPattern.test(email.value)) {
+    error.value = 'Podaj poprawny adres e-mail.'
+    return false
+  }
+
+  return true
+}
 
 async function handleSave() {
   success.value = false
   error.value = null
 
-  try {
-    await updateProfile(name.value, email.value)
+  if (!validate()) return
+
+  await store.updateProfile(name.value, email.value)
+  if (!store.error) {
     success.value = true
-  } catch (e) {
-    console.error(e)
-    error.value = 'Nie udało się zapisać zmian.'
+  } else {
+    error.value = store.error
   }
 }
 </script>

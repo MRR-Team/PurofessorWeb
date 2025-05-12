@@ -4,7 +4,6 @@
 
     <div class="flex flex-col sm:flex-row gap-4 mb-6">
       <BaseInput v-model="search" placeholder="Szukaj postaci..." class="flex-1" />
-
       <select v-model="selectedRole" class="border px-4 py-2 rounded w-full sm:w-64">
         <option value="">Wszystkie role</option>
         <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
@@ -16,7 +15,7 @@
 
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       <div
-        v-for="champion in filteredChampions"
+        v-for="champion in displayedChampions"
         :key="champion.id"
         class="p-4 border rounded shadow hover:shadow-md transition"
       >
@@ -35,6 +34,7 @@ import { useChampionStore } from '@/stores/championStore'
 import { useChampionService } from '@/composables/useChampionService'
 import { SearchByName, SearchByRole } from '@/strategies/SearchStrategy'
 import type { SearchStrategy } from '@/strategies/SearchStrategy'
+import { Champion } from '@/models/Champion'
 import BaseInput from '@/components/shared/BaseInput.vue'
 
 const search = ref('')
@@ -46,14 +46,26 @@ const { fetchChampions } = useChampionService()
 const { champions, isLoading, error } = store
 
 const strategy = computed<SearchStrategy>(() => {
-  if (selectedRole.value) {
-    return new SearchByRole(selectedRole.value)
-  }
-  return new SearchByName()
+  return selectedRole.value
+    ? new SearchByRole(selectedRole.value)
+    : new SearchByName()
 })
 
-const filteredChampions = computed(() =>
-  strategy.value.search(search.value, champions)
+const displayedChampions = computed<Champion[]>(() =>
+  strategy.value.search(search.value, champions).map(c =>
+    new Champion(
+      c.id,
+      c.name,
+      c.title,
+      c.role,
+      c.difficulty,
+      c.image,
+      c.inRotation,
+      c.counters,
+      c.recommendedItems,
+      c.patchNotes
+    )
+  )
 )
 
 onMounted(() => {

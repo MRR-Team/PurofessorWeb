@@ -1,21 +1,10 @@
-import { useNotificationStore } from '@/stores/notificationStore'
 import { NotificationRepository } from '@/repositories/NotificationRepository'
-import { Notification } from '@/models/Notification'
-import { toRawNotification } from '@/utils/toRawNotification'
-import type { INotification } from '@/interfaces/INotification'
+import type { Notification } from '@/models/Notification'
 
-export async function fetchNotifications(): Promise<void> {
-  const store = useNotificationStore()
-  store.isLoading = true
-  store.error = null
+export async function loadNotifications(): Promise<Notification[]> {
+  return await NotificationRepository.getAll()
+}
 
-  try {
-    const data: Notification[] = await NotificationRepository.getAll()
-    store.notifications = data.map(toRawNotification)
-  } catch (err) {
-    console.error('Błąd ładowania powiadomień:', err)
-    store.error = 'Nie udało się pobrać powiadomień'
-  } finally {
-    store.isLoading = false
-  }
+export async function loadNotificationById(id: number): Promise<Notification> {
+  return await NotificationRepository.getById(id)
 }
