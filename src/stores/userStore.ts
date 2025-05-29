@@ -1,63 +1,54 @@
 import { defineStore } from 'pinia'
-import type { IUser } from '@/interfaces/IUser'
-import { updateUserData, getMe } from '@/services/userService'
-
-type State = {
-  token: string
-  user: IUser | null
-  error: string | null
-  isLoading: boolean
-}
+import { updateUserProfile, fetchCurrentUser, persistUser, clearUser, loadUserFromStorage } from '@/services/userService'
+import type { User } from '@/models/User'
 
 export const useUserStore = defineStore('user', {
-  state: (): State => ({
-    token: localStorage.getItem('token') ?? '',
-    user: localStorage.getItem('user')
-      ? (JSON.parse(localStorage.getItem('user')!) as IUser)
-      : null,
-    error: null,
-    isLoading: false
-  }),
+  state: () => {
+    const { user, token } = loadUserFromStorage()
+    return {
+      user: user as User | null,
+      token,
+      isLoading: false,
+      error: null as string | null
+    }
+  },
 
   actions: {
-    setUser(user: IUser, token: string) {
+    setUser(user: User, token: string) {
       this.user = user
       this.token = token
-      localStorage.setItem('user', JSON.stringify(user))
-      localStorage.setItem('token', token)
+      persistUser(user, token)
     },
 
     logout() {
       this.user = null
       this.token = ''
-      localStorage.removeItem('user')
-      localStorage.removeItem('token')
+      clearUser()
     },
 
-    async updateProfile(name: string, email: string): Promise<void> {
+    async updateProfile(name: string, email: string) {
       if (!this.user) return
       this.isLoading = true
       this.error = null
 
       try {
-        const updatedUser = await updateUserData(this.user.id, { name, email })
-        this.setUser(updatedUser, this.token)
-      } catch (e: unknown) {
-        this.error = e instanceof Error ? e.message : 'Nie udało się zaktualizować profilu'
+        const updated = await updateUserProfile(this.user.id, name, email)
+        this.setUser(updated, this.token)
+      } catch (err: any) {
+        this.error = 'Nie udało się zaktualizować profilu'
       } finally {
         this.isLoading = false
       }
     },
 
-    async fetchCurrentUser(): Promise<void> {
+    async fetchUser() {
       this.isLoading = true
       this.error = null
-
       try {
-        const me = await getMe()
-        this.setUser(me, this.token)
-      } catch (e: unknown) {
-        this.error = e instanceof Error ? e.message : 'Nie udało się pobrać danych użytkownika'
+        const user = await fetchCurrentUser()
+        this.setUser(user, this.token)
+      } catch (err: any) {
+        this.error = 'Nie udało się pobrać danych użytkownika'
       } finally {
         this.isLoading = false
       }

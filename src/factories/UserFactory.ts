@@ -10,4 +10,12 @@ export class UserFactory {
       data.role
     )
   }
+  static fromStorage(data: any): User {
+    return new User(
+      data.id,
+      data.name,
+      data.email,
+      data.role as 'user' | 'admin'
+    )
+  }
 }

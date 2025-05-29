@@ -2,14 +2,15 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
 import type { IUser } from '@/interfaces/IUser'
+import { UserFactory } from '@/factories/UserFactory'
 
 describe('userStore', () => {
-  const mockUser: IUser = {
+  const mockUser = UserFactory.fromApi({
     id: 1,
     name: 'Test User',
     email: 'test@example.com',
     role: 'user'
-  }
+  })
 
   beforeEach(() => {
     setActivePinia(createPinia())
