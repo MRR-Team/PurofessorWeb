@@ -62,27 +62,30 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const store = useUserStore()
   const isGuest = !store.token
+  const userRole = store.user?.role || ''
 
   if (to.meta.guestOnly && !isGuest) {
-    return next('/dashboard')
-  }
-
-  if (to.meta.public) {
+    if (to.path !== '/dashboard') return next('/dashboard')
     return next()
   }
 
+  if (to.meta.public) return next()
+
   if (to.meta.requiresAuth && isGuest) {
-    return next('/login')
+    if (to.path !== '/login') return next('/login')
+    return next()
   }
 
   if (to.meta.requiresAuth && to.meta.roles) {
     const roles = to.meta.roles as string[]
-    if (!roles.includes(store.user?.role || '')) {
-      return next('/dashboard')
+    if (!roles.includes(userRole)) {
+      if (to.path !== '/dashboard') return next('/dashboard')
+      return next()
     }
   }
 
   next()
 })
+
 
 export default router
