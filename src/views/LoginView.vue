@@ -31,6 +31,7 @@ import { useUserSessionStore } from '@/stores/userSessionStore';
 import { handleLogin } from '@/services/authViewService';
 import BaseInput from '@/components/shared/BaseInput.vue';
 import BaseButton from '@/components/shared/BaseButton.vue';
+import axios from 'axios';
 
 const email = ref('');
 const password = ref('');
@@ -50,7 +51,18 @@ const onLogin = async () => {
       error.value = store.error;
     }
   } catch (e: unknown) {
-    if (e instanceof Error) {
+    if (axios.isAxiosError(e)) {
+      switch (e.response?.status) {
+        case 401:
+          error.value = 'Nieprawidłowy email lub hasło.';
+          break;
+        case 500:
+          error.value = 'Błąd serwera. Spróbuj ponownie później.';
+          break;
+        default:
+          error.value = e.response?.data?.message || 'Wystąpił błąd logowania.';
+      }
+    } else if (e instanceof Error) {
       error.value = e.message;
     } else {
       error.value = 'Wystąpił nieznany błąd.';
