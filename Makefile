@@ -13,6 +13,10 @@ build:
 serve:
 	npm run serve
 
+test:
+	npm run test:unit
+
+
 up:
 	docker-compose up -d --build
 
