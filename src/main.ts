@@ -3,6 +3,7 @@ import App from './App.vue';
 import { createPinia } from 'pinia';
 import router from './router';
 import { championService } from '@/services/championService';
+import './assets/tailwind.css'
 
 import { useUserSessionStore } from '@/stores/userSessionStore';
 import { UserPersistenceService } from '@/services/userPersistenceService.ts';

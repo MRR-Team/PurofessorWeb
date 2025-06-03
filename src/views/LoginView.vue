@@ -1,28 +1,30 @@
 <template>
-  <div class="max-w-md mx-auto mt-10 p-4 border rounded bg-white shadow">
-    <h1 class="text-xl font-bold mb-4">Logowanie</h1>
-    <form @submit.prevent="onLogin">
-      <BaseInput v-model="email" type="email" placeholder="Email" class="mb-4" />
-      <BaseInput v-model="password" type="password" placeholder="Hasło" class="mb-4" />
-      <BaseButton type="submit" :disabled="isLoading">
-        {{ isLoading ? 'Logowanie...' : 'Zaloguj' }}
-      </BaseButton>
-    </form>
+  <div class="min-h-screen flex items-center justify-center px-4">
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md">
+      <h1 class="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-white">Logowanie</h1>
 
-    <p v-if="error" class="mt-4 text-sm text-red-600 text-center">
-      {{ error }}
-    </p>
+      <form @submit.prevent="onLogin" class="flex flex-col gap-4">
+        <BaseInput v-model="email" type="email" placeholder="Email" />
+        <BaseInput v-model="password" type="password" placeholder="Hasło" />
+        <BaseButton type="submit" :disabled="isLoading">
+          {{ isLoading ? 'Logowanie...' : 'Zaloguj' }}
+        </BaseButton>
+      </form>
 
-    <p class="mt-4 text-sm text-center">
-      Nie masz konta?
-      <router-link to="/register" class="text-blue-600 underline">Zarejestruj się</router-link>
-    </p>
-    <p class="mt-2 text-sm text-center">
-      Zapomniałeś hasła?
-      <router-link to="/reset-password" class="text-blue-600 underline">Resetuj hasło</router-link>
-    </p>
+      <p v-if="error" class="mt-4 text-sm text-red-600 text-center">{{ error }}</p>
+
+      <p class="mt-4 text-sm text-center text-gray-700 dark:text-gray-300">
+        Nie masz konta?
+        <router-link to="/register" class="text-blue-500 underline">Zarejestruj się</router-link>
+      </p>
+      <p class="text-sm text-center text-gray-700 dark:text-gray-300">
+        Zapomniałeś hasła?
+        <router-link to="/reset-password" class="text-blue-500 underline">Resetuj hasło</router-link>
+      </p>
+    </div>
   </div>
 </template>
+
 
 <script setup lang="ts">
 import { ref } from 'vue';
