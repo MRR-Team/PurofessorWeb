@@ -1,16 +1,10 @@
-import type { IUser } from '@/interfaces/IUser'
-
-export class User implements IUser {
+export class User {
   constructor(
     public id: number,
     public name: string,
     public email: string,
-    public role: 'user' | 'admin'
+    public is_admin: boolean
   ) {}
-
-  isAdmin(): boolean {
-    return this.role === 'admin'
-  }
 
   getDisplayName(): string {
     return this.name || this.email

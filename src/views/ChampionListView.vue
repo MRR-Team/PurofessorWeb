@@ -1,28 +1,42 @@
 <template>
-  <div class="max-w-4xl mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-4">Lista Championów</h1>
+  <div class="max-w-6xl mx-auto p-6">
+    <h1 class="heading-1 mb-6">Lista Championów</h1>
 
     <div class="flex flex-col sm:flex-row gap-4 mb-6">
       <BaseInput v-model="search" placeholder="Szukaj postaci..." class="flex-1" />
-      <select v-model="selectedRole" class="border px-4 py-2 rounded w-full sm:w-64">
+      <select
+        v-model="selectedRole"
+        class="input !bg-bg-card !text-body w-full sm:w-64"
+      >
         <option value="">Wszystkie role</option>
         <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
       </select>
     </div>
 
-    <div v-if="isLoading">Ładowanie championów...</div>
-    <div v-else-if="error" class="text-red-600">{{ error }}</div>
+    <div v-if="isLoading" class="text-body">Ładowanie championów...</div>
 
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div v-else-if="error" class="text-danger">
+      {{ error }}
+    </div>
+
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       <div
         v-for="champion in displayedChampions"
         :key="champion.id"
-        class="p-4 border rounded shadow hover:shadow-md transition"
+        class="card hover:shadow-lg transition"
       >
-        <h2 class="text-lg font-semibold">{{ champion.getDisplayName() }}</h2>
-        <p class="text-sm text-gray-600">{{ champion.role }} • {{ champion.difficulty }}</p>
-        <p v-if="champion.isAvailable()" class="text-green-600 mt-1">W rotacji</p>
-        <p v-else class="text-gray-400 mt-1">Poza rotacją</p>
+        <h2 class="text-lg font-semibold text-heading mb-1">
+          {{ champion.getDisplayName() }}
+        </h2>
+        <p class="text-sm text-muted">
+          {{ champion.role }} • {{ champion.difficulty }}
+        </p>
+        <p
+          class="mt-2 text-sm font-medium"
+          :class="champion.isAvailable() ? 'text-green-600' : 'text-muted'"
+        >
+          {{ champion.isAvailable() ? 'W rotacji' : 'Poza rotacją' }}
+        </p>
       </div>
     </div>
   </div>

@@ -24,7 +24,7 @@
 - Axios
 - Vitest – testy jednostkowe
 - ESLint + Prettier
-
+- Tailwind
 ---
 
 ## Project Setup

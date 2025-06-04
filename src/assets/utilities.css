@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .card {
+    @apply p-6 rounded-2xl shadow-xl bg-bg-card text-body;
+  }
+
+  .heading-1 {
+    @apply text-2xl font-bold text-heading;
+  }
+
+  .body-text {
+    @apply text-base text-body;
+  }
+
+  .input {
+    @apply w-full px-4 py-2 rounded-md border border-muted bg-bg-card text-body placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary transition;
+  }
+
+  .button {
+    @apply w-full px-4 py-2 font-semibold rounded-md bg-primary text-white hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed transition;
+  }
+}
+
+@layer utilities {
+  .text-body {
+    color: var(--text-body);
+  }
+
+  .text-heading {
+    color: var(--text-heading);
+  }
+
+  .bg-bg-page {
+    background-color: var(--bg-page);
+  }
+
+  .bg-bg-card {
+    background-color: var(--bg-card);
+  }
+
+  .text-primary {
+    color: var(--color-primary);
+  }
+
+  .border-muted {
+    border-color: var(--color-muted);
+  }
+
+  .placeholder-muted::placeholder {
+    color: var(--color-muted);
+  }
+
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+
+  .bg-secondary {
+    background-color: var(--color-secondary);
+  }
+
+  .text-danger {
+    color: var(--color-danger);
+  }
+}

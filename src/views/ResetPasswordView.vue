@@ -1,26 +1,28 @@
 <template>
-  <div class="max-w-md mx-auto mt-10 p-4 border rounded bg-white shadow">
-    <h1 class="text-xl font-bold mb-4">Resetowanie hasła</h1>
+  <div class="flex items-center justify-center min-h-screen px-4">
+    <div class="card w-full max-w-md">
+      <h1 class="heading-1 text-center mb-6">Resetowanie hasła</h1>
 
-    <form @submit.prevent="onReset">
-      <BaseInput v-model="email" type="email" placeholder="Email" class="mb-4" />
-      <BaseButton type="submit" :disabled="isLoading">
-        {{ isLoading ? 'Wysyłanie...' : 'Wyślij link resetujący' }}
-      </BaseButton>
-    </form>
+      <form @submit.prevent="onReset" class="flex flex-col gap-4">
+        <BaseInput v-model="email" type="email" placeholder="Email" />
+        <BaseButton type="submit" :disabled="isLoading">
+          {{ isLoading ? 'Wysyłanie...' : 'Wyślij link resetujący' }}
+        </BaseButton>
+      </form>
 
-    <p v-if="success" class="mt-4 text-sm text-green-600 text-center">
-      Jeśli email istnieje, wysłano link do resetu hasła ✅
-    </p>
+      <p v-if="success" class="mt-4 text-sm text-green-600 text-center">
+        Jeśli email istnieje, wysłano link do resetu hasła ✅
+      </p>
 
-    <p v-if="error" class="mt-4 text-sm text-red-600 text-center">
-      {{ error }}
-    </p>
+      <p v-if="error" class="mt-4 text-sm text-danger text-center">
+        {{ error }}
+      </p>
 
-    <p class="mt-4 text-sm text-center">
-      Pamiętasz hasło?
-      <router-link to="/login" class="text-blue-600 underline">Zaloguj się</router-link>
-    </p>
+      <p class="mt-4 text-sm text-center">
+        Pamiętasz hasło?
+        <RouterLink to="/login" class="text-primary underline">Zaloguj się</RouterLink>
+      </p>
+    </div>
   </div>
 </template>
 
