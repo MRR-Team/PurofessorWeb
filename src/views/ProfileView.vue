@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-md mx-auto p-6 border rounded shadow bg-white">
+  <div class="max-w-md mx-auto p-6 border rounded shadow bg-red">
     <h1 class="text-xl font-bold mb-4">Twój profil</h1>
 
     <form @submit.prevent="handleSave">
@@ -22,6 +22,7 @@ import BaseButton from '@/components/shared/BaseButton.vue';
 
 import { useUserSessionStore } from '@/stores/userSessionStore';
 import { updateProfile } from '@/services/profileViewService';
+import BackgroundWrapper from "@/components/layout/BackgroundWrapper.vue";
 
 const store = useUserSessionStore();
 const { user, isLoading, error } = store;

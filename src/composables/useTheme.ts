@@ -1,18 +1,17 @@
-import { watch } from 'vue'
+import { computed } from 'vue'
 import { useUiStore } from '@/stores/uiStore'
 
 export function useTheme() {
   const store = useUiStore()
 
-  const applyTheme = (theme: string) => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+  const isDark = computed(() => store.theme === 'dark')
+
+  function toggleTheme(): void {
+    store.setTheme(isDark.value ? 'light' : 'dark')
   }
 
-  applyTheme(store.theme)
-
-  watch(() => store.theme, applyTheme)
+  return {
+    isDark,
+    toggleTheme
+  }
 }

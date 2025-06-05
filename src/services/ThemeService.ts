@@ -1,11 +1,21 @@
-const THEME_KEY = 'theme'
-
 export class ThemeService {
-  static getTheme(): string {
-    return localStorage.getItem(THEME_KEY) || 'light'
+  static saveTheme(theme: string): void {
+    localStorage.setItem('theme', theme)
+
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
   }
 
-  static saveTheme(theme: string): void {
-    localStorage.setItem(THEME_KEY, theme)
+  static getTheme(): string {
+    const stored = localStorage.getItem('theme')
+    if (stored === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    return stored || 'light'
   }
 }

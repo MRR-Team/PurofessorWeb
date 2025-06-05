@@ -39,6 +39,8 @@ export const useUserSessionStore = defineStore('userSession', {
       this.user = null
       this.token = null
       this.error = null
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
     }
   }
 })

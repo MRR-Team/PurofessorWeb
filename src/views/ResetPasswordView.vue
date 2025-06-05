@@ -3,15 +3,15 @@
     <div class="card w-full max-w-md">
       <h1 class="heading-1 text-center mb-6">Resetowanie hasła</h1>
 
-      <form @submit.prevent="onReset" class="flex flex-col gap-4">
-        <BaseInput v-model="email" type="email" placeholder="Email" />
-        <BaseButton type="submit" :disabled="isLoading">
-          {{ isLoading ? 'Wysyłanie...' : 'Wyślij link resetujący' }}
-        </BaseButton>
-      </form>
+      <AuthForm
+        :fields="['email']"
+        submitText="Wyślij link resetujący"
+        :loading="isLoading"
+        @submit="onReset"
+      />
 
       <p v-if="success" class="mt-4 text-sm text-green-600 text-center">
-        Jeśli email istnieje, wysłano link do resetu hasła ✅
+        Jeśli email istnieje, wysłano link do resetu hasła
       </p>
 
       <p v-if="error" class="mt-4 text-sm text-danger text-center">
@@ -29,21 +29,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { handleReset } from '@/services/authViewService'
-import BaseInput from '@/components/shared/BaseInput.vue'
-import BaseButton from '@/components/shared/BaseButton.vue'
+import AuthForm from '@/components/auth/AuthForm.vue'
 
-const email = ref('')
 const isLoading = ref(false)
 const success = ref(false)
 const error = ref<string | null>(null)
 
-const onReset = async () => {
+const onReset = async (form: Record<string, string>) => {
   success.value = false
   error.value = null
   isLoading.value = true
 
   try {
-    await handleReset(email.value)
+    await handleReset(form.email)
     success.value = true
   } catch (e: any) {
     if (e?.response?.status === 404) {

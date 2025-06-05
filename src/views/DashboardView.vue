@@ -7,12 +7,12 @@
 
           <p class="text-body">
             Jesteś zalogowany jako:
-            <strong>{{ user?.name }}</strong> ({{ user?.email }})
+            <strong>{{ store.user?.name }}</strong> ({{ store.user?.email }})
           </p>
 
           <p class="text-sm text-muted mt-2">
             Twoja rola:
-            <code>{{ getReadableRole(user) }}</code>
+            <code>{{ getReadableRole(store.user) }}</code>
           </p>
         </div>
       </div>
@@ -26,7 +26,7 @@ import BackgroundWrapper from '@/components/layout/BackgroundWrapper.vue'
 import TextWrapper from '@/components/layout/TextWrapper.vue'
 import type { User } from '@/models/User'
 
-const { user } = useUserSessionStore()
+const store = useUserSessionStore()
 
 function getReadableRole(user: User | null): string {
   if (!user) return ''
