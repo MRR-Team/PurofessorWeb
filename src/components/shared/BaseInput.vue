@@ -3,7 +3,10 @@
     :type="type"
     :placeholder="placeholder"
     :value="modelValue"
-    @input="onInput"
+    @input="handleInput"
+    @keydown.enter="handleKeydownEnter"
+    @focus="handleFocus"
+    @blur="handleBlur"
     class="input"
   />
 </template>
@@ -19,10 +22,27 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
+  (e: 'input', event: Event): void
+  (e: 'keydown.enter', event: KeyboardEvent): void
+  (e: 'focus', event: FocusEvent): void
+  (e: 'blur', event: FocusEvent): void
 }>()
 
-function onInput(event: Event) {
+function handleInput(event: Event) {
   const target = event.target as HTMLInputElement
   emit('update:modelValue', target.value)
+  emit('input', event)
+}
+
+function handleKeydownEnter(event: KeyboardEvent) {
+  emit('keydown.enter', event)
+}
+
+function handleFocus(event: FocusEvent) {
+  emit('focus', event)
+}
+
+function handleBlur(event: FocusEvent) {
+  emit('blur', event)
 }
 </script>

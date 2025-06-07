@@ -1,6 +1,6 @@
-import api from '@/services/axios'
+import api from '@/services/axios.ts'
 
-export class GoogleAuthRepository {
+export class GoogleAuthApiRepository {
   static getGoogleRedirectUrl(): string {
     return 'http://localhost/api/auth/redirect/google'
   }

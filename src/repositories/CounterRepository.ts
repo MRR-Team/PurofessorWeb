@@ -1,8 +1,9 @@
 import api from '@/services/axios'
+import type { IChampion } from '@/interfaces/IChampion'
 
 export class CounterRepository {
-  static async fetchCounter(role: string, enemyChampion: string): Promise<string[]> {
-    const response = await api.get<string[]>(`/counter/${role}/${enemyChampion}`)
+  static async fetchCounter(role: string, enemyChampionId: string): Promise<IChampion[]> {
+    const response = await api.get<IChampion[]>(`/counter/${role}/${enemyChampionId}`)
     return response.data
   }
 }

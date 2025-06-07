@@ -1,4 +1,3 @@
-<!-- src/components/champions/CardChampion.vue -->
 <template>
   <div class="champion-card card hover:shadow-lg transition flex flex-col items-center p-4">
     <img

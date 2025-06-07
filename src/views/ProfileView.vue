@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-md mx-auto p-6 border rounded shadow bg-red">
+  <div class="max-w-md mx-auto p-6 border rounded shadow bg-white">
     <h1 class="text-xl font-bold mb-4">Twój profil</h1>
 
     <form @submit.prevent="handleSave">
@@ -10,67 +10,69 @@
       </BaseButton>
     </form>
 
-    <p v-if="success" class="text-sm text-green-600 mt-4">Zapisano pomyślnie </p>
+    <p v-if="success" class="text-sm text-green-600 mt-4">Zapisano pomyślnie</p>
     <p v-if="error" class="text-sm text-red-600 mt-4">{{ error }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
-import BaseInput from '@/components/shared/BaseInput.vue';
-import BaseButton from '@/components/shared/BaseButton.vue';
+import { ref, onMounted, watch } from 'vue'
+import BaseInput from '@/components/shared/BaseInput.vue'
+import BaseButton from '@/components/shared/BaseButton.vue'
 
-import { useUserSessionStore } from '@/stores/userSessionStore';
-import { updateProfile } from '@/services/profileViewService';
+import { useUserSessionStore } from '@/stores/userSessionStore'
+import { useProfileUseCase } from '@/services/usecases/ProfileUseCase'
 
-const store = useUserSessionStore();
-const { user, isLoading, error } = store;
+const store = useUserSessionStore()
+const { updateProfile } = useProfileUseCase()
 
-const name = ref('');
-const email = ref('');
-const success = ref(false);
+const { user, isLoading, error } = store
+
+const name = ref('')
+const email = ref('')
+const success = ref(false)
 
 onMounted(() => {
   if (user) {
-    name.value = user.name;
-    email.value = user.email;
+    name.value = user.name
+    email.value = user.email
   }
-});
+})
 
 watch(() => store.user, updated => {
   if (updated) {
-    name.value = updated.name;
-    email.value = updated.email;
+    name.value = updated.name
+    email.value = updated.email
   }
-});
+})
 
 function validate(): boolean {
-  success.value = false;
+  success.value = false
 
   if (!name.value.trim()) {
-    store.setError('Imię jest wymagane.');
-    return false;
+    store.setError('Imię jest wymagane.')
+    return false
   }
 
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!email.value.trim() || !emailPattern.test(email.value)) {
-    store.setError('Podaj poprawny adres e-mail.');
-    return false;
+    store.setError('Podaj poprawny adres e-mail.')
+    return false
   }
 
-  return true;
+  return true
 }
 
 async function handleSave() {
-  success.value = false;
+  success.value = false
 
-  if (!validate()) return;
+  if (!validate()) return
 
   try {
-    await updateProfile(name.value, email.value);
-    success.value = true;
+    await updateProfile(name.value, email.value)
+    success.value = true
   } catch {
-    success.value = false;
+    success.value = false
   }
 }
 </script>

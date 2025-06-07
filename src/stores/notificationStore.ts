@@ -1,10 +1,8 @@
 import { defineStore } from 'pinia'
-import { notificationService } from '@/services/notificationService'
-import { toRawNotification } from '@/utils/toRawNotification'
-import type { INotification } from '@/interfaces/INotification'
+import type { Notification } from '@/models/Notification'
 
 type State = {
-  notifications: INotification[]
+  notifications: Notification[]
   isLoading: boolean
   error: string | null
 }
@@ -17,33 +15,20 @@ export const useNotificationStore = defineStore('notifications', {
   }),
 
   actions: {
-    async fetchNotifications() {
-      this.isLoading = true
-      this.error = null
-
-      try {
-        const data = await notificationService.loadNotifications()
-        this.notifications = data.map(toRawNotification)
-      } catch (err: unknown) {
-        this.error = err instanceof Error ? err.message : 'Nie udało się pobrać powiadomień'
-      } finally {
-        this.isLoading = false
-      }
+    setNotifications(notifications: Notification[]) {
+      this.notifications = notifications
     },
 
-    async getById(id: number): Promise<INotification | undefined> {
-      const cached = this.notifications.find(n => n.id === id)
-      if (cached) return cached
+    addNotification(notification: Notification) {
+      this.notifications.push(notification)
+    },
 
-      try {
-        const notification = await notificationService.loadNotificationById(id)
-        const raw = toRawNotification(notification)
-        this.notifications.push(raw)
-        return raw
-      } catch (err: unknown) {
-        console.error('Nie udało się pobrać powiadomienia o ID:', id)
-        return undefined
-      }
+    setLoading(isLoading: boolean) {
+      this.isLoading = isLoading
+    },
+
+    setError(error: string | null) {
+      this.error = error
     }
   }
 })

@@ -1,9 +1,9 @@
-import { User } from '@/models/User'
+import { User } from '@/models/User.ts'
 
 const USER_KEY = 'user'
 const TOKEN_KEY = 'token'
 
-export const UserPersistenceService = {
+export const UserPersistenceAdapter = {
   saveUser(user: User) {
     const rawUser = {
       id: user.id,

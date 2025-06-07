@@ -23,34 +23,24 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { handleRegister } from '@/services/authViewService'
-import axios from 'axios'
+import { useAuthUseCase } from '@/services/usecases/AuthUseCase'
 import AuthForm from '@/components/auth/AuthForm.vue'
 
-const error = ref<string | null>(null)
-const isLoading = ref(false)
 const router = useRouter()
+const { register } = useAuthUseCase()
+
+const isLoading = ref(false)
+const error = ref<string | null>(null)
 
 const onRegister = async (form: Record<string, string>) => {
-  error.value = null
   isLoading.value = true
+  error.value = null
 
   try {
-    await handleRegister(
-      form.name,
-      form.email,
-      form.password,
-      form.confirmPassword
-    )
-    await router.push('/login')
+    await register(form.name, form.email, form.password, form.confirmPassword)
+    router.push('/login')
   } catch (e: any) {
-    if (e.message === 'Hasła się nie zgadzają') {
-      error.value = 'Hasła się nie zgadzają'
-    } else if (e?.response?.status === 422) {
-      error.value = 'Podany email już istnieje lub dane są niepoprawne'
-    } else {
-      error.value = 'Błąd rejestracji'
-    }
+    error.value = e.message || 'Błąd rejestracji'
   } finally {
     isLoading.value = false
   }

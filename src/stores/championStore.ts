@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { championService } from '@/services/championService'
+import { ChampionService } from '@/services/ChampionService'
 import type { Champion } from '@/models/Champion'
 
 type State = {
@@ -21,8 +21,7 @@ export const useChampionStore = defineStore('champions', {
       this.error = null
 
       try {
-        const champions = await championService.loadChampions()
-        this.champions = champions
+        this.champions = await ChampionService.loadChampions()
       } catch (err: unknown) {
         this.error = err instanceof Error ? err.message : 'Nie udało się pobrać championów'
       } finally {
@@ -35,7 +34,7 @@ export const useChampionStore = defineStore('champions', {
       if (cached) return cached
 
       try {
-        const champion = await championService.loadChampionById(id)
+        const champion = await ChampionService.loadChampionById(id)
         this.champions.push(champion)
         return champion
       } catch (err: unknown) {

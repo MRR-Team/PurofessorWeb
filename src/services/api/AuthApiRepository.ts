@@ -1,7 +1,7 @@
-import api from '@/services/axios'
-import type { LoginPayload, RegisterPayload } from '@/types/AuthTypes'
+import api from '@/services/axios.ts'
+import type { LoginPayload, RegisterPayload } from '@/types/AuthTypes.ts'
 
-export const AuthRepository = {
+export const AuthApiRepository = {
   async login(payload: LoginPayload) {
     return await api.post('/login', payload)
   },

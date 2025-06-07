@@ -4,7 +4,7 @@ export class Notification {
     public title: string,
     public content: string,
     public type: 'info' | 'warning' | 'danger' | 'update',
-    public createdAt: string // ISO string, np. 2025-05-15T12:34:56Z
+    public createdAt: string
   ) {}
 
   isCritical(): boolean {

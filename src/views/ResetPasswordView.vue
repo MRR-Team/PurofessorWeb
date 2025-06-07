@@ -14,9 +14,7 @@
         Jeśli email istnieje, wysłano link do resetu hasła
       </p>
 
-      <p v-if="error" class="mt-4 text-sm text-danger text-center">
-        {{ error }}
-      </p>
+      <p v-if="error" class="mt-4 text-sm text-danger text-center">{{ error }}</p>
 
       <p class="mt-4 text-sm text-center">
         Pamiętasz hasło?
@@ -28,27 +26,25 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { handleReset } from '@/services/authViewService'
+import { useAuthUseCase } from '@/services/usecases/AuthUseCase'
 import AuthForm from '@/components/auth/AuthForm.vue'
+
+const { resetPassword } = useAuthUseCase()
 
 const isLoading = ref(false)
 const success = ref(false)
 const error = ref<string | null>(null)
 
 const onReset = async (form: Record<string, string>) => {
-  success.value = false
-  error.value = null
   isLoading.value = true
+  error.value = null
+  success.value = false
 
   try {
-    await handleReset(form.email)
+    await resetPassword(form.email)
     success.value = true
   } catch (e: any) {
-    if (e?.response?.status === 404) {
-      error.value = 'Nie znaleziono konta z takim adresem email.'
-    } else {
-      error.value = 'Wystąpił błąd podczas resetowania hasła.'
-    }
+    error.value = e.message || 'Wystąpił błąd resetowania hasła.'
   } finally {
     isLoading.value = false
   }
