@@ -1,18 +1,13 @@
 # PurofessorWeb – Frontend
 ## Architektura i wzorce
 
-- **Zasady OOP, SOLID** – (SRP, OCP, LSP - (brak dziedziczenia, struktury interfejsów i fabryk są spójne), ISP, DIP).
+- **Zasady OOP, SOLID** – (SRP, OCP, LSP - (brak dziedziczenia, struktury interfejsów i fabryk są spójne), ISP, DIP), DRY (Don't Repeat Yourself)
 - **Wzorce projektowe**:
     - **Factory Pattern** 
     - **Service Layer** 
-    - **Dependency Injection** 
+    - **UseCase Pattern** 
     - **State Management** 
-    - **Separation of concerns**
     - **Composables**
-    - **Persistence Layer**
-    - **Error Handling Pattern**
-    - **Router Guard Pattern**
-    - **DRY (Don't Repeat Yourself)**
 ---
 
 ## Stack technologiczny
@@ -25,6 +20,9 @@
 - Vitest – testy jednostkowe
 - ESLint + Prettier
 - Tailwind
+- Makefile
+- Docker
+
 ---
 
 ## Project Setup
@@ -45,3 +43,8 @@ make dev
 make test
 ```
 
+### Run Docker
+
+```sh
+make up
+```
