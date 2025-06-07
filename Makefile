@@ -4,8 +4,8 @@ install:
 	npm install
 
 dev:
-	rm -rf dist
-	npm run dev
+	docker-compose up -d --build
+
 
 build:
 	npm run build

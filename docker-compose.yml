@@ -7,7 +7,11 @@ services:
       dockerfile: Dockerfile
     container_name: vue_frontend
     ports:
-      - "8080:80"
+      - "3000:3000"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    command: npm run dev
     networks:
       - frontend_network
 
