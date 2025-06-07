@@ -22,7 +22,6 @@ import BaseButton from '@/components/shared/BaseButton.vue';
 
 import { useUserSessionStore } from '@/stores/userSessionStore';
 import { updateProfile } from '@/services/profileViewService';
-import BackgroundWrapper from "@/components/layout/BackgroundWrapper.vue";
 
 const store = useUserSessionStore();
 const { user, isLoading, error } = store;

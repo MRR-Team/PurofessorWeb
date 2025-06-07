@@ -1,6 +1,5 @@
 <template>
-  <TextWrapper>
-    <BackgroundWrapper>
+
       <div class="w-full max-w-7xl px-4 py-6 mx-auto pt-24">
         <div class="card max-w-2xl mx-auto">
           <h1 class="heading-1 mb-4">Witaj w panelu użytkownika</h1>
@@ -16,8 +15,7 @@
           </p>
         </div>
       </div>
-    </BackgroundWrapper>
-  </TextWrapper>
+
 </template>
 
 <script setup lang="ts">

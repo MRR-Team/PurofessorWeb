@@ -31,6 +31,11 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: true, roles: ['user', 'admin'] }
   },
   {
+    path: '/counterpick',
+    component: () => import('@/views/CounterPickView.vue'),
+    meta: { public: true }
+  },
+  {
     path: '/admin',
     component: () => import('@/views/AdminView.vue'),
     meta: { requiresAuth: true, roles: ['admin'] },
@@ -56,7 +61,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/champions',
-    component: () => import('@/views/ChampionListView.vue'),
+    component: () => import('@/views/CounterPickView.vue'),
     meta: { public: true }
   },
   {

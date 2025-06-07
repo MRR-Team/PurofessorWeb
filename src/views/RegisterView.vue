@@ -42,7 +42,7 @@ const onRegister = async (form: Record<string, string>) => {
       form.password,
       form.confirmPassword
     )
-    router.push('/login')
+    await router.push('/login')
   } catch (e: any) {
     if (e.message === 'Hasła się nie zgadzają') {
       error.value = 'Hasła się nie zgadzają'

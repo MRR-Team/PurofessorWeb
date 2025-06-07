@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-right relative">
-    <template v-if="user">
-      <span class="navbar-user">Witaj, {{ user.getDisplayName() }}</span>
+    <template v-if="store.user">
+      <span class="navbar-user">Witaj, {{ store.user.getDisplayName() }}</span>
       <button @click="toggleSettings" class="navbar-button">⚙</button>
       <button @click="toggleProfile" class="navbar-button">👤</button>
       <button @click="logout" class="text-sm underline hover:no-underline">Wyloguj</button>
@@ -11,8 +11,8 @@
       <RouterLink to="/login" class="text-sm underline hover:no-underline">Zaloguj</RouterLink>
     </template>
 
-    <NavbarDropdown v-if="settingsOpen && user" />
-    <NavbarUserDropdown v-if="profileOpen && user" />
+    <NavbarDropdown v-if="settingsOpen" />
+    <NavbarUserDropdown v-if="profileOpen && store.user" />
   </div>
 </template>
 
@@ -24,7 +24,6 @@ import NavbarDropdown from './NavbarDropdown.vue'
 import NavbarUserDropdown from './NavbarUserDropdown.vue'
 
 const store = useUserSessionStore()
-const user = store.user
 const router = useRouter()
 
 const settingsOpen = ref(false)
