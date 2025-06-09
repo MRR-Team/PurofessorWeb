@@ -1,30 +1,32 @@
 <template>
   <div class="flex items-center justify-center min-h-screen px-4">
     <div class="card w-full max-w-md">
-      <h1 class="heading-1 text-center mb-6">Logowanie</h1>
+      <h1 class="heading-1 text-center mb-6">{{ t.loginTitle }}</h1>
 
       <AuthForm
         :fields="['email', 'password']"
-        submitText="Zaloguj"
+        :submitText="t.loginSubmit"
         :loading="isLoading"
         @submit="onLogin"
       />
-      <p v-if="error" class="mt-4 text-sm text-danger text-center">{{ error }}</p>
+
+      <p v-if="error" class="mt-4 text-sm text-danger text-center">{{ t.loginError }}</p>
 
       <button
         @click="loginWithGoogle"
         class="mt-4 px-6 py-2 bg-red-600 text-white rounded transition w-full"
       >
-        Zaloguj przez Google
+        {{ t.loginGoogle }}
       </button>
 
       <p class="mt-4 text-sm text-center">
-        Nie masz konta?
-        <RouterLink to="/register" class="text-primary underline">Zarejestruj się</RouterLink>
+        {{ t.noAccount }}
+        <RouterLink to="/register" class="text-primary underline">{{ t.registerNow }}</RouterLink>
       </p>
+
       <p class="text-sm text-center">
-        Zapomniałeś hasła?
-        <RouterLink to="/reset-password" class="text-primary underline">Resetuj hasło</RouterLink>
+        {{ t.forgotPassword }}
+        <RouterLink to="/reset-password" class="text-primary underline">{{ t.resetPasswordNow }}</RouterLink>
       </p>
     </div>
   </div>
@@ -35,7 +37,8 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthUseCase } from '@/services/usecases/AuthUseCase'
 import AuthForm from '@/components/auth/AuthForm.vue'
-
+import { useTranslation } from '@/composables/useTranslation'
+const { t } = useTranslation()
 const router = useRouter()
 const { login, loginWithGoogle, processGoogleCallback } = useAuthUseCase()
 

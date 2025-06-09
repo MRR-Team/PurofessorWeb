@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import type { User } from '@/models/User'
 import { UserFactory } from '@/factories/UserFactory'
 import type { IUser } from '@/interfaces/IUser'
+import { UserPersistenceAdapter } from '@/services/adapters/UserPersistenceAdapter'
 
 interface State {
   user: User | null
@@ -21,10 +22,12 @@ export const useUserSessionStore = defineStore('userSession', {
   actions: {
     setUser(rawUser: IUser) {
       this.user = UserFactory.fromApi(rawUser)
+      UserPersistenceAdapter.saveUser(this.user)
     },
 
     setToken(token: string) {
       this.token = token
+      UserPersistenceAdapter.saveToken(token)
     },
 
     setLoading(value: boolean) {
@@ -39,8 +42,7 @@ export const useUserSessionStore = defineStore('userSession', {
       this.user = null
       this.token = null
       this.error = null
-      localStorage.removeItem('user')
-      localStorage.removeItem('token')
-    }
+      UserPersistenceAdapter.clearSession()
+    },
   }
 })

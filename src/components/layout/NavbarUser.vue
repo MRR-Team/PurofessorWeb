@@ -1,14 +1,14 @@
 <template>
   <div class="navbar-right relative">
     <template v-if="store.user">
-      <span class="navbar-user">Witaj, {{ store.user.getDisplayName() }}</span>
+      <span class="navbar-user">{{ t.loggedInAs }} {{ store.user.getDisplayName() }}</span>
       <button @click="toggleSettings" class="navbar-button">⚙</button>
       <button @click="toggleProfile" class="navbar-button">👤</button>
-      <button @click="logout" class="text-sm underline hover:no-underline">Wyloguj</button>
+      <button @click="logout" class="text-sm underline hover:no-underline">{{ t.logout }}</button>
     </template>
 
     <template v-else>
-      <RouterLink to="/login" class="text-sm underline hover:no-underline">Zaloguj</RouterLink>
+      <RouterLink to="/login" class="text-sm underline hover:no-underline">{{ t.loginTitle }}</RouterLink>
     </template>
 
     <NavbarDropdown v-if="settingsOpen" />
@@ -16,13 +16,15 @@
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { useUserSessionStore } from '@/stores/userSessionStore'
 import NavbarDropdown from './NavbarDropdown.vue'
 import NavbarUserDropdown from './NavbarUserDropdown.vue'
-
+import { useTranslation } from '@/composables/useTranslation'
+const { t } = useTranslation()
 const store = useUserSessionStore()
 const router = useRouter()
 

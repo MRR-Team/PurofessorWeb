@@ -36,8 +36,13 @@ const routes: RouteRecordRaw[] = [
     meta: { public: true }
   },
   {
+    path: '/rotation',
+    component: () => import('@/views/RotationView.vue'),
+    meta: {public: true}
+  },
+  {
     path: '/items',
-    component: () => import('@/views/ItemsView.vue')
+    component: () => import('@/views/ItemBuildView.vue')
   },
   {
     path: '/server-status',
@@ -45,7 +50,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/admin',
-    component: () => import('@/views/AdminView.vue'),
+    component: () => import('@/views/admin/AdminView.vue'),
     meta: { requiresAuth: true, roles: ['admin'] },
     children: [
       { path: '', redirect: '/admin/rotation' },

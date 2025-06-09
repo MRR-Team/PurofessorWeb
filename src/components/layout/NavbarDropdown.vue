@@ -8,7 +8,7 @@
       to="/admin"
       class="mt-2 w-full text-center text-xs py-1 rounded transition text-red"
     >
-      Panel Admina
+      {{ t.adminPanel }}
     </RouterLink>
   </div>
 </template>
@@ -18,9 +18,11 @@ import ThemeSwitcher from '@/components/ui/ThemeSwitcher.vue'
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher.vue'
 import { RouterLink } from 'vue-router'
 import { useUserSessionStore } from '@/stores/userSessionStore'
-
+import { useTranslation } from '@/composables/useTranslation'
+const { t } = useTranslation()
 const store = useUserSessionStore()
 const isAdmin = store.user?.is_admin === true
+
 </script>
 
 <style scoped>

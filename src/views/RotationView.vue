@@ -7,20 +7,11 @@
 
     <div v-else class="flex flex-wrap justify-center gap-4">
       <div
-        v-for="champion in champions"
+        v-for="champion in availableChampions"
         :key="champion.id"
         class="bg-bg-card p-4 rounded shadow w-48 text-left"
       >
-        <div class="flex items-center mb-2">
-          <input
-            type="checkbox"
-            :checked="champion.isAvailable"
-            @change="toggleChampionAvailability(champion)"
-            class="mr-2"
-          />
-          <span class="font-semibold">{{ champion.getDisplayName() }}</span>
-        </div>
-
+        <div class="font-semibold mb-2">{{ champion.getDisplayName() }}</div>
         <p class="text-sm text-muted mb-2">{{ getReadableLane(champion.role) }}</p>
         <img
           :src="getChampionImageUrl(champion)"
@@ -32,14 +23,13 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useChampionStore } from '@/stores/championStore'
 import type { Champion } from '@/models/Champion'
-import api from '@/services/axios'
 import { useTranslation } from '@/composables/useTranslation'
 const { t } = useTranslation()
+
 const championStore = useChampionStore()
 
 const champions = ref<Champion[]>([])
@@ -58,6 +48,10 @@ onMounted(async () => {
   }
 })
 
+const availableChampions = computed(() =>
+  champions.value.filter(c => c.isAvailable)
+)
+
 function getReadableLane(role: string): string {
   switch (role) {
     case 'top': return t.value.roleTop
@@ -69,19 +63,8 @@ function getReadableLane(role: string): string {
   }
 }
 
-
 function getChampionImageUrl(champion: Champion): string {
   const imageName = champion.name.toLowerCase().replace(/ /g, '')
   return `/images/champions/${imageName}.png`
-}
-
-async function toggleChampionAvailability(champion: Champion) {
-  try {
-    await api.patch(`/champions/${champion.id}/toggle-availability`)
-    champion.isAvailable = !champion.isAvailable
-  } catch (err) {
-    console.error('Błąd podczas zmiany dostępności championa:', err)
-    alert('Nie udało się zmienić dostępności championa.')
-  }
 }
 </script>

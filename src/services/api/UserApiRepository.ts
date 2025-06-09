@@ -5,8 +5,17 @@ import type { User } from '@/models/User.ts'
 
 export const UserApiRepository = {
 
-  async updateProfile(userId: number, payload: Partial<IUser>): Promise<User> {
+  async getAll(): Promise<User[]> {
+    const response = await api.get<IUser[]>('/users')
+    return response.data.map(UserFactory.fromApi)
+  },
+
+  async updateUser(userId: number, payload: Partial<IUser>): Promise<User> {
     const response = await api.put<IUser>(`/users/${userId}`, payload)
     return UserFactory.fromApi(response.data)
+  },
+
+  async deleteUser(userId: number): Promise<void> {
+    await api.delete(`/users/${userId}`)
   }
 }

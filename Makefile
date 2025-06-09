@@ -4,7 +4,7 @@ install:
 	npm install
 
 dev:
-	docker-compose up -d --build
+	docker-compose up --build
 
 
 build:

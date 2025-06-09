@@ -1,30 +1,34 @@
 <template>
   <div class="navbar-user-dropdown">
-    <p class="text-sm font-semibold text-heading">👤 Użytkownik</p>
-    <p class="text-xs text-muted">Imię: {{ user?.name }}</p>
-    <p class="text-xs text-muted">Email: {{ user?.email }}</p>
-    <p class="text-xs text-muted">Rola: <span class="font-semibold">{{ getReadableRole(user) }}</span></p>
+    <p class="text-sm font-semibold text-heading">👤 {{ t.profileTitle }}</p>
+    <p class="text-xs text-muted">{{ t.namePlaceholder }}: {{ user?.name }}</p>
+    <p class="text-xs text-muted">{{ t.emailPlaceholder }}: {{ user?.email }}</p>
+    <p class="text-xs text-muted">{{ t.yourRole }}: <span class="font-semibold">{{ getReadableRole(user) }}</span></p>
 
     <RouterLink
       to="/profile"
       class="mt-2 w-full text-center bg-primary/90 hover:bg-primary text-white text-xs py-1 rounded transition"
     >
-      Przejdź do profilu
+      {{ t.profileTitle }}
     </RouterLink>
   </div>
 </template>
 
+
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useUserSessionStore } from '@/stores/userSessionStore'
 import { RouterLink } from 'vue-router'
 import type { User } from '@/models/User'
+import { useTranslation } from '@/composables/useTranslation'
+const { t } = useTranslation()
 
 const store = useUserSessionStore()
-const user = store.user
+const user = computed(() => store.user)
 
 function getReadableRole(user: User | null): string {
   if (!user) return ''
-  return user.is_admin ? 'Administrator' : 'Użytkownik'
+  return user.is_admin ? t.value.roleAdmin : t.value.roleUser
 }
 </script>
 
