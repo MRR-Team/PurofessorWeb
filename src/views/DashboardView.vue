@@ -1,32 +1,40 @@
 <template>
+  <div class="w-full max-w-7xl px-4 py-6 mx-auto pt-24">
+    <div class="card max-w-2xl mx-auto">
+      <h1 class="heading-1 mb-4">{{ t.dashboardTitle }}</h1>
 
-      <div class="w-full max-w-7xl px-4 py-6 mx-auto pt-24">
-        <div class="card max-w-2xl mx-auto">
-          <h1 class="heading-1 mb-4">{{ t.dashboardTitle }}</h1>
+      <p class="text-body">
+        {{ t.loggedInAs }}
+        <strong>{{ currentUser?.name }}</strong> ({{ currentUser?.email }})
+      </p>
 
-          <p class="text-body">
-            {{ t.loggedInAs }}
-            <strong>{{ store.user?.name }}</strong> ({{ store.user?.email }})
-          </p>
-
-          <p class="text-sm text-muted mt-2">
-            {{ t.yourRole }}
-            <code>{{ getReadableRole(store.user) }}</code>
-          </p>
-        </div>
-      </div>
-
+      <p class="text-sm text-muted mt-2">
+        {{ t.yourRole }}
+        <code>{{ getReadableRole() }}</code>
+      </p>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted } from 'vue'
+import { useUserStore } from '@/stores/userStore'
 import { useUserSessionStore } from '@/stores/userSessionStore'
-import type { User } from '@/models/User'
 import { useTranslation } from '@/composables/useTranslation'
 const { t } = useTranslation()
-const store = useUserSessionStore()
+const userStore = useUserStore()
+const sessionStore = useUserSessionStore()
 
-function getReadableRole(user: User | null): string {
-  if (!user) return ''
-  return user.is_admin ? t.value.roleAdmin : t.value.roleUser
+const currentUser = computed(() =>
+  userStore.users.find(u => u.id === sessionStore.user?.id) || sessionStore.user
+)
+
+function getReadableRole(): string {
+  if (!sessionStore.user) return ''
+  return sessionStore.user.is_admin ? t.value.roleAdmin : t.value.roleUser
 }
+
+onMounted(async () => {
+  await userStore.fetchUsers()
+})
 </script>

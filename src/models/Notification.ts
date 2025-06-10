@@ -1,4 +1,6 @@
-export class Notification {
+import type {INotification} from "@/interfaces/INotification.ts";
+
+export class Notification implements INotification{
   constructor(
     public id: number,
     public title: string,

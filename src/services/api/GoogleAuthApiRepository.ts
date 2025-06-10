@@ -2,7 +2,7 @@ import api from '@/services/axios.ts'
 
 export class GoogleAuthApiRepository {
   static getGoogleRedirectUrl(): string {
-    return 'http://localhost/api/auth/redirect/google'
+    return 'https://collegiumpizzerona.pl/api/auth/redirect/google'
   }
 
   static async fetchGoogleRedirectUrl(): Promise<string> {

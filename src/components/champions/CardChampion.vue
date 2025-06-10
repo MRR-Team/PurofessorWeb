@@ -19,27 +19,13 @@
 <script setup lang="ts">
 import type { Champion } from '@/models/Champion'
 import { useTranslation } from '@/composables/useTranslation'
+import { getChampionImageUrl, getReadableLane } from '@/utils/ChampionUtils'
+
 const { t } = useTranslation()
 const props = defineProps<{
   champion: Champion
 }>()
 
-function getReadableLane(role: string): string {
-  switch (role) {
-    case 'top': return t.value.roleTop
-    case 'jungle': return t.value.roleJungle
-    case 'mid': return t.value.roleMid
-    case 'bot': return t.value.roleBot
-    case 'support': return t.value.roleSupport
-    default: return role
-  }
-}
-
-
-function getChampionImageUrl(champion: Champion): string {
-  const imageName = champion.name.toLowerCase().replace(/ /g, '')
-  return `/images/champions/${imageName}.png`
-}
 </script>
 
 <style scoped>

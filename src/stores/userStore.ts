@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import type { User } from '@/models/User'
 import { UserService } from '@/services/UserService'
+import { useUserSessionStore } from '@/stores/userSessionStore'
+import { UserPersistenceAdapter } from '@/services/adapters/UserPersistenceAdapter'
 
 interface State {
   users: User[]
@@ -35,6 +37,12 @@ export const useUserStore = defineStore('users', {
         const index = this.users.findIndex(u => u.id === userId)
         if (index !== -1) {
           this.users[index] = updatedUser
+        }
+
+        const userSession = useUserSessionStore()
+        if (userSession.user?.id === updatedUser.id) {
+          userSession.setUser(updatedUser)
+          UserPersistenceAdapter.saveUser(updatedUser)
         }
       } catch (err: unknown) {
         console.error('Nie udało się zaktualizować użytkownika:', err)

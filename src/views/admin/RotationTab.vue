@@ -15,7 +15,7 @@
           <input
             type="checkbox"
             :checked="champion.isAvailable"
-            @change="toggleChampionAvailability(champion)"
+            @change="toggleChampionAvailabilityAction(champion)"
             class="mr-2"
           />
           <span class="font-semibold">{{ champion.getDisplayName() }}</span>
@@ -37,10 +37,13 @@
 import { ref, onMounted } from 'vue'
 import { useChampionStore } from '@/stores/championStore'
 import type { Champion } from '@/models/Champion'
-import api from '@/services/axios'
 import { useTranslation } from '@/composables/useTranslation'
+import { useChampionAdminUseCase } from '@/services/usecases/ChampionAdminUseCase'
+import {getChampionImageUrl, getReadableLane} from "@/utils/ChampionUtils.ts";
+
 const { t } = useTranslation()
 const championStore = useChampionStore()
+const { toggleChampionAvailability } = useChampionAdminUseCase()
 
 const champions = ref<Champion[]>([])
 const isLoading = ref(false)
@@ -57,27 +60,9 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
-
-function getReadableLane(role: string): string {
-  switch (role) {
-    case 'top': return t.value.roleTop
-    case 'jungle': return t.value.roleJungle
-    case 'mid': return t.value.roleMid
-    case 'bot': return t.value.roleBot
-    case 'support': return t.value.roleSupport
-    default: return role
-  }
-}
-
-
-function getChampionImageUrl(champion: Champion): string {
-  const imageName = champion.name.toLowerCase().replace(/ /g, '')
-  return `/images/champions/${imageName}.png`
-}
-
-async function toggleChampionAvailability(champion: Champion) {
+async function toggleChampionAvailabilityAction(champion: Champion) {
   try {
-    await api.patch(`/champions/${champion.id}/toggle-availability`)
+    await toggleChampionAvailability(champion.id)
     champion.isAvailable = !champion.isAvailable
   } catch (err) {
     console.error('Błąd podczas zmiany dostępności championa:', err)

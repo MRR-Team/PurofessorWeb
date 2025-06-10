@@ -1,11 +1,10 @@
 <template>
   <nav class="flex gap-4 px-6 py-4 bg-primary text-white text-sm shadow">
-    <RouterLink to="/admin/rotation" class="tab" active-class="font-bold underline">{{
-        t.menuRotation
-      }}</RouterLink>
+    <RouterLink to="/admin/rotation" class="tab" active-class="font-bold underline">{{t.menuRotation }}</RouterLink>
     <RouterLink to="/admin/stats" class="tab" active-class="font-bold underline">{{ t.adminMenuStats }}</RouterLink>
     <RouterLink to="/admin/users" class="tab" active-class="font-bold underline">{{ t.adminMenuUsers }}</RouterLink>
     <RouterLink to="/admin/notifications" class="tab" active-class="font-bold underline">{{ t.adminMenuNotifications }}</RouterLink>
+    <RouterLink to="/admin/logs" class="tab" active-class="font-bold underline">Logi</RouterLink>
   </nav>
 </template>
 

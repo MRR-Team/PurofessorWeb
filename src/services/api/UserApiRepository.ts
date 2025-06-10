@@ -1,13 +1,12 @@
-import api from '@/services/axios.ts'
-import { UserFactory } from '@/factories/UserFactory.ts'
-import type { IUser } from '@/interfaces/IUser.ts'
-import type { User } from '@/models/User.ts'
+import api from '@/services/axios'
+import { UserFactory } from '@/factories/UserFactory'
+import type { IUser } from '@/interfaces/IUser'
+import type { User } from '@/models/User'
 
 export const UserApiRepository = {
-
   async getAll(): Promise<User[]> {
-    const response = await api.get<IUser[]>('/users')
-    return response.data.map(UserFactory.fromApi)
+    const response = await api.get<{ data: IUser[] }>('/users')
+    return response.data.data.map(UserFactory.fromApi)
   },
 
   async updateUser(userId: number, payload: Partial<IUser>): Promise<User> {

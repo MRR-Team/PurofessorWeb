@@ -69,6 +69,10 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'notifications',
         component: () => import('@/views/admin/NotificationsTab.vue')
+      },
+      {
+        path: 'logs',
+        component: () => import('@/views/admin/LogsTab.vue')
       }
     ]
   },

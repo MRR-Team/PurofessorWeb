@@ -26,16 +26,23 @@ import { useRouter } from 'vue-router'
 import { useAuthUseCase } from '@/services/usecases/AuthUseCase'
 import AuthForm from '@/components/auth/AuthForm.vue'
 import { useTranslation } from '@/composables/useTranslation'
+import { ValidatorUtils } from '@/utils/ValidatorUtils'
+
 const { t } = useTranslation()
 const router = useRouter()
 const { register } = useAuthUseCase()
-
 const isLoading = ref(false)
 const error = ref<string | null>(null)
-
 const onRegister = async (form: Record<string, string>) => {
   isLoading.value = true
   error.value = null
+
+  const validationError = validateRegisterForm(form)
+  if (validationError) {
+    error.value = validationError
+    isLoading.value = false
+    return
+  }
 
   try {
     await register(form.name, form.email, form.password, form.confirmPassword)
@@ -45,5 +52,13 @@ const onRegister = async (form: Record<string, string>) => {
   } finally {
     isLoading.value = false
   }
+}
+  function validateRegisterForm(form: Record<string, string>): string | null {
+  return (
+    ValidatorUtils.validateName(form.name) ||
+    ValidatorUtils.validateEmail(form.email) ||
+    ValidatorUtils.validatePassword(form.password) ||
+    (form.password !== form.confirmPassword ? 'Hasła się nie zgadzają.' : null)
+  )
 }
 </script>

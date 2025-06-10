@@ -52,6 +52,8 @@ import CardChampion from '@/components/champions/CardChampion.vue'
 import ChampionAutocomplete from '@/components/shared/ChampionAutocomplete.vue'
 import type { Champion } from '@/models/Champion'
 import { useTranslation } from '@/composables/useTranslation'
+import { getReadableLane } from '@/utils/ChampionUtils'
+
 const { t } = useTranslation()
 const { generateCounter } = useCounterPickUseCase()
 const championStore = useChampionStore()
@@ -84,17 +86,6 @@ async function generateCounterAction() {
     error.value = 'Nie udało się pobrać kontr.'
   } finally {
     isLoading.value = false
-  }
-}
-
-function getReadableLane(role: string): string {
-  switch (role) {
-    case 'top': return t.value.roleTop
-    case 'jungle': return t.value.roleJungle
-    case 'mid': return t.value.roleMid
-    case 'bot': return t.value.roleBot
-    case 'support': return t.value.roleSupport
-    default: return role
   }
 }
 </script>

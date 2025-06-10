@@ -24,15 +24,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import api from '@/services/axios'
 import { useTranslation } from '@/composables/useTranslation'
+import { useStatsUseCase } from '@/services/usecases/StatsUseCase'
+import type { CounterStat } from '@/repositories/StatsRepository'
 
 const { t } = useTranslation()
-
-interface CounterStat {
-  champion: { id: number; name: string }
-  total: number
-}
+const { fetchCounterStats } = useStatsUseCase()
 
 const stats = ref<CounterStat[]>([])
 const isLoading = ref(false)
@@ -43,8 +40,7 @@ onMounted(async () => {
   error.value = null
 
   try {
-    const response = await api.get<CounterStat[]>('/stats/counter-search')
-    stats.value = response.data
+    stats.value = await fetchCounterStats()
   } catch (err: any) {
     error.value = err?.message || 'Nie udało się pobrać statystyk.'
   } finally {

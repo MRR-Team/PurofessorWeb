@@ -29,6 +29,8 @@ import { ref } from 'vue'
 import { useAuthUseCase } from '@/services/usecases/AuthUseCase'
 import AuthForm from '@/components/auth/AuthForm.vue'
 import { useTranslation } from '@/composables/useTranslation'
+import { ValidatorUtils } from '@/utils/ValidatorUtils'
+
 const { t } = useTranslation()
 const { resetPassword } = useAuthUseCase()
 
@@ -41,6 +43,13 @@ const onReset = async (form: Record<string, string>) => {
   error.value = null
   success.value = false
 
+  const validationError = validateResetForm(form)
+  if (validationError) {
+    error.value = validationError
+    isLoading.value = false
+    return
+  }
+
   try {
     await resetPassword(form.email)
     success.value = true
@@ -49,5 +58,9 @@ const onReset = async (form: Record<string, string>) => {
   } finally {
     isLoading.value = false
   }
+}
+
+function validateResetForm(form: Record<string, string>): string | null {
+  return ValidatorUtils.validateEmail(form.email)
 }
 </script>

@@ -43,6 +43,6 @@ export const useUserSessionStore = defineStore('userSession', {
       this.token = null
       this.error = null
       UserPersistenceAdapter.clearSession()
-    },
+    }
   }
 })

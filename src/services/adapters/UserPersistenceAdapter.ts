@@ -1,4 +1,4 @@
-import { User } from '@/models/User.ts'
+import { User } from '@/models/User'
 
 const USER_KEY = 'user'
 const TOKEN_KEY = 'token'

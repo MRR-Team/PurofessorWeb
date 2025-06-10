@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-right relative">
-    <template v-if="store.user">
-      <span class="navbar-user">{{ t.loggedInAs }} {{ store.user.getDisplayName() }}</span>
+    <template v-if="currentUser">
+      <span class="navbar-user">{{ t.loggedInAs }} {{ currentUser?.name }}</span>
       <button @click="toggleSettings" class="navbar-button">⚙</button>
       <button @click="toggleProfile" class="navbar-button">👤</button>
       <button @click="logout" class="text-sm underline hover:no-underline">{{ t.logout }}</button>
@@ -12,24 +12,32 @@
     </template>
 
     <NavbarDropdown v-if="settingsOpen" />
-    <NavbarUserDropdown v-if="profileOpen && store.user" />
+    <NavbarUserDropdown v-if="profileOpen && currentUser" />
   </div>
 </template>
 
-
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { useUserSessionStore } from '@/stores/userSessionStore'
+import { useUserStore } from '@/stores/userStore'
 import NavbarDropdown from './NavbarDropdown.vue'
 import NavbarUserDropdown from './NavbarUserDropdown.vue'
 import { useTranslation } from '@/composables/useTranslation'
+
 const { t } = useTranslation()
-const store = useUserSessionStore()
 const router = useRouter()
+
+const userStore = useUserStore()
+const sessionStore = useUserSessionStore()
 
 const settingsOpen = ref(false)
 const profileOpen = ref(false)
+
+// DOKŁADNIE TAK JAK W DASHBOARDZIE → currentUser
+const currentUser = computed(() =>
+  userStore.users.find(u => u.id === sessionStore.user?.id) || sessionStore.user
+)
 
 function toggleSettings() {
   settingsOpen.value = !settingsOpen.value
@@ -42,9 +50,13 @@ function toggleProfile() {
 }
 
 function logout() {
-  store.clearSession()
+  sessionStore.clearSession()
   router.push('/login')
 }
+
+onMounted(async () => {
+  await userStore.fetchUsers()
+})
 </script>
 
 <style scoped>

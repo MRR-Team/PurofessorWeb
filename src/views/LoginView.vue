@@ -38,6 +38,8 @@ import { useRouter } from 'vue-router'
 import { useAuthUseCase } from '@/services/usecases/AuthUseCase'
 import AuthForm from '@/components/auth/AuthForm.vue'
 import { useTranslation } from '@/composables/useTranslation'
+import { ValidatorUtils } from '@/utils/ValidatorUtils'
+
 const { t } = useTranslation()
 const router = useRouter()
 const { login, loginWithGoogle, processGoogleCallback } = useAuthUseCase()
@@ -49,6 +51,13 @@ const onLogin = async (form: Record<string, string>) => {
   isLoading.value = true
   error.value = null
 
+  const validationError = validateLoginForm(form)
+  if (validationError) {
+    error.value = validationError
+    isLoading.value = false
+    return
+  }
+
   try {
     await login(form.email, form.password)
     router.push('/dashboard')
@@ -57,6 +66,14 @@ const onLogin = async (form: Record<string, string>) => {
   } finally {
     isLoading.value = false
   }
+}
+
+function validateLoginForm(form: Record<string, string>): string | null {
+  return (
+    ValidatorUtils.validateEmail(form.email) ||
+    ValidatorUtils.validatePassword(form.password) ||
+    null
+  )
 }
 
 onMounted(() => {

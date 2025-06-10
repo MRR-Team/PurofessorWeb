@@ -1,81 +1,71 @@
 <template>
-  <form @submit.prevent="handleSave" class="max-w-md mx-auto p-6 border rounded shadow bg-white">
-    <h1 class="text-xl font-bold mb-4">{{ t.profileTitle }}</h1>
-
-    <BaseInput v-model="name" type="text" :placeholder="t.namePlaceholder" class="mb-4" />
-    <BaseInput v-model="email" type="email" :placeholder="t.emailPlaceholder" class="mb-4" />
-
-    <BaseButton :disabled="isLoading" type="submit">
-      {{ isLoading ? t.saving : t.saveChanges }}
-    </BaseButton>
-
-    <p v-if="success" class="text-sm text-green-600 mt-4">{{ t.savedSuccess }}</p>
-    <p v-if="error" class="text-sm text-red-600 mt-4">{{ error }}</p>
-  </form>
+  <div class="card p-6 max-w-2xl mx-auto">
+    <h1 class="heading-1 mb-4">{{ t.profileTitle }}</h1>
+    <table class="w-full text-sm text-left border-collapse mb-6">
+      <thead>
+      <tr class="bg-primary text-white">
+        <th class="p-2 border">{{ t.usersTableName }}</th>
+        <th class="p-2 border">{{ t.usersTableEmail }}</th>
+        <th class="p-2 border">Hasło</th>
+        <th class="p-2 border">{{ t.usersTableActions }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <UserEditableRow
+        v-if="currentUser"
+        :user="currentUser"
+        :editingUserId="editingUserId"
+        @startEdit="startEdit"
+        @saveEdit="saveEdit"
+      />
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
-import BaseInput from '@/components/shared/BaseInput.vue'
-import BaseButton from '@/components/shared/BaseButton.vue'
+import { computed, onMounted, ref } from 'vue'
 import { useTranslation } from '@/composables/useTranslation'
-const { t } = useTranslation()
-
 import { useUserSessionStore } from '@/stores/userSessionStore'
-import { UserService } from '@/services/UserService'
+import { useUserStore } from '@/stores/userStore'
+import UserEditableRow from '@/components/shared/UserProfileRow.vue'
+import type { User } from '@/models/User'
 
-const store = useUserSessionStore()
+const { t } = useTranslation()
+const userStore = useUserStore()
+const sessionStore = useUserSessionStore()
 
-const { user, isLoading, error } = store
+const editingUserId = ref<number | null>(null)
 
-const name = ref('')
-const email = ref('')
-const success = ref(false)
+const currentUser = computed(() =>
+  userStore.users.find(u => u.id === sessionStore.user?.id) || sessionStore.user
+)
 
-onMounted(() => {
-  if (user) {
-    name.value = user.name
-    email.value = user.email
-  }
+onMounted(async () => {
+  await userStore.fetchUsers()
 })
 
-watch(() => store.user, updated => {
-  if (updated) {
-    name.value = updated.name
-    email.value = updated.email
-  }
-})
-
-function validate(): boolean {
-  success.value = false
-
-  if (!name.value.trim()) {
-    store.setError(t.value.requiredName)
-    return false
-  }
-
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (!email.value.trim() || !emailPattern.test(email.value)) {
-    store.setError(t.value.invalidEmail)
-    return false
-  }
-
-  return true
+function startEdit(user: User) {
+  editingUserId.value = user.id
 }
 
-async function handleSave() {
-  success.value = false
+async function saveEdit(userId: number, name: string, email: string, password: string) {
+  if (!name.trim() || !email.trim()) {
+    alert('Name and Email cannot be empty!')
+    return
+  }
 
-  if (!validate()) return
+  const payload: any = { name, email }
+  if (password.trim()) {
+    payload.password = password
+  }
 
   try {
-    await updateProfile(name.value, email.value)
-    name.value = store.user?.name ?? ''
-    email.value = store.user?.email ?? ''
-    success.value = true
-  } catch {
-    success.value = false
+    await userStore.updateUser(userId, payload)
+    await userStore.fetchUsers()
+    editingUserId.value = null
+  } catch (e: any) {
+    alert(e.message || 'Error updating user')
   }
 }
-
 </script>

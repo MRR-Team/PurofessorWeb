@@ -1,9 +1,11 @@
 <template>
   <div class="navbar-user-dropdown">
     <p class="text-sm font-semibold text-heading">👤 {{ t.profileTitle }}</p>
-    <p class="text-xs text-muted">{{ t.namePlaceholder }}: {{ user?.name }}</p>
-    <p class="text-xs text-muted">{{ t.emailPlaceholder }}: {{ user?.email }}</p>
-    <p class="text-xs text-muted">{{ t.yourRole }}: <span class="font-semibold">{{ getReadableRole(user) }}</span></p>
+    <p class="text-xs text-muted">{{ t.namePlaceholder }}: {{ currentUser?.name }}</p>
+    <p class="text-xs text-muted">{{ t.emailPlaceholder }}: {{ currentUser?.email }}</p>
+    <p class="text-xs text-muted">
+      {{ t.yourRole }}: <span class="font-semibold">{{ getReadableRole() }}</span>
+    </p>
 
     <RouterLink
       to="/profile"
@@ -14,22 +16,29 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
+import { useUserStore } from '@/stores/userStore'
 import { useUserSessionStore } from '@/stores/userSessionStore'
 import { RouterLink } from 'vue-router'
-import type { User } from '@/models/User'
 import { useTranslation } from '@/composables/useTranslation'
+
 const { t } = useTranslation()
+const userStore = useUserStore()
+const sessionStore = useUserSessionStore()
 
-const store = useUserSessionStore()
-const user = computed(() => store.user)
+const currentUser = computed(() =>
+  userStore.users.find(u => u.id === sessionStore.user?.id) || sessionStore.user
+)
 
-function getReadableRole(user: User | null): string {
-  if (!user) return ''
-  return user.is_admin ? t.value.roleAdmin : t.value.roleUser
+function getReadableRole(): string {
+  if (!sessionStore.user) return ''
+  return sessionStore.user.is_admin ? t.value.roleAdmin : t.value.roleUser
 }
+
+onMounted(async () => {
+  await userStore.fetchUsers()
+})
 </script>
 
 <style scoped>
