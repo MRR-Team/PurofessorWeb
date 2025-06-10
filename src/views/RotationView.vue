@@ -6,19 +6,11 @@
     <div v-else-if="error" class="text-danger mb-4">{{ error }}</div>
 
     <div v-else class="flex flex-wrap justify-center gap-4">
-      <div
+      <ChampionCard
         v-for="champion in availableChampions"
         :key="champion.id"
-        class="bg-bg-card p-4 rounded shadow w-48 text-left"
-      >
-        <div class="font-semibold mb-2">{{ champion.getDisplayName() }}</div>
-        <p class="text-sm text-muted mb-2">{{ getReadableLane(champion.role) }}</p>
-        <img
-          :src="getChampionImageUrl(champion)"
-          alt="Champion image"
-          class="w-20 h-20 object-cover rounded-full mx-auto"
-        />
-      </div>
+        :champion="champion"
+      />
     </div>
   </div>
 </template>
@@ -28,7 +20,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useChampionStore } from '@/stores/championStore'
 import type { Champion } from '@/models/Champion'
 import { useTranslation } from '@/composables/useTranslation'
-import { getChampionImageUrl, getReadableLane } from '@/utils/ChampionUtils'
+import ChampionCard from '@/components/champions/ChampionCard.vue'  // zmiana: używamy ChampionCard.vue
 const { t } = useTranslation()
 
 const championStore = useChampionStore()
@@ -52,5 +44,4 @@ onMounted(async () => {
 const availableChampions = computed(() =>
   champions.value.filter(c => c.isAvailable)
 )
-
 </script>

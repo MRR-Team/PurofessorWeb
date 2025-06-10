@@ -1,5 +1,5 @@
 <template>
-  <button @click="toggleTheme" class="p-2 border rounded">
+  <button @click="toggleTheme" class="input text-sm p-2 border rounded">
     {{ isDark ? '🌙' : '☀️' }}
   </button>
 </template>

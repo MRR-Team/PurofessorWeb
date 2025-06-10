@@ -1,5 +1,7 @@
 export const translations = {
   pl: {
+    registerSuccessTitle: 'Rejestracja zakończona!',
+    registerSuccessDescription: 'Sprawdź swoją skrzynkę e-mail i kliknij link potwierdzający, aby aktywować konto.',
     email: 'E-mail',
     password: 'Hasło',
     confirmPassword: 'Potwiedź Hasło',
@@ -96,6 +98,8 @@ export const translations = {
   },
 
   en: {
+    registerSuccessTitle: 'Registration completed!',
+    registerSuccessDescription: 'Please check your email and click the confirmation link to activate your account.',
     email: 'E-mail',
     password: 'Password',
     confirmPassword: 'Confirm Password',

@@ -1,9 +1,9 @@
 <template>
-  <select v-model="language" class="input text-sm">
+  <select v-model="language" class="input text-sm p-2 border rounded">
     <option value="pl">🇵🇱 Polski</option>
     <option value="en">🇬🇧 English</option>
   </select>
-</template>z
+</template>
 
 <script setup lang="ts">
 import { useLanguage } from '@/composables/useLanguage'

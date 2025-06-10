@@ -10,4 +10,3 @@ export class ChampionService {
     return ChampionRepository.getById(id)
   }
 }
-

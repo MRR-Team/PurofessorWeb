@@ -2,6 +2,9 @@ import type { Champion } from '@/models/Champion'
 import { useTranslation } from '@/composables/useTranslation'
 
 export function getChampionImageUrl(champion: Champion): string {
+  if (!champion.photo || champion.photo.trim() === '' || champion.photo === 'null') {
+    return '/default-champion.png'
+  }
   return champion.photo
 }
 

@@ -15,6 +15,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/RegisterView.vue'),
     meta: { guestOnly: true }
   },
+
   {
     path: '/reset-password',
     component: () => import('@/views/ResetPasswordView.vue'),
