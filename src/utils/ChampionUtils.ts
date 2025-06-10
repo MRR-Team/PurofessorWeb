@@ -2,8 +2,7 @@ import type { Champion } from '@/models/Champion'
 import { useTranslation } from '@/composables/useTranslation'
 
 export function getChampionImageUrl(champion: Champion): string {
-  const imageName = champion.name.toLowerCase().replace(/ /g, '')
-  return `/images/champions/${imageName}.png`
+  return champion.photo
 }
 
 export function getReadableLane(role: string): string {

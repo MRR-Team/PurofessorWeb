@@ -2,11 +2,12 @@
   <div class="navbar-right relative">
     <template v-if="currentUser">
       <span class="navbar-user">{{ t.loggedInAs }} {{ currentUser?.name }}</span>
-      <button @click="toggleSettings" class="navbar-button">⚙</button>
       <button @click="toggleProfile" class="navbar-button">👤</button>
+    </template>
+    <button @click="toggleSettings" class="navbar-button">⚙</button>
+    <template v-if="currentUser">
       <button @click="logout" class="text-sm underline hover:no-underline">{{ t.logout }}</button>
     </template>
-
     <template v-else>
       <RouterLink to="/login" class="text-sm underline hover:no-underline">{{ t.loginTitle }}</RouterLink>
     </template>
@@ -34,7 +35,6 @@ const sessionStore = useUserSessionStore()
 const settingsOpen = ref(false)
 const profileOpen = ref(false)
 
-// DOKŁADNIE TAK JAK W DASHBOARDZIE → currentUser
 const currentUser = computed(() =>
   userStore.users.find(u => u.id === sessionStore.user?.id) || sessionStore.user
 )

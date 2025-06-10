@@ -5,6 +5,7 @@ export class ChampionFactory {
   static fromApi(data: IChampion): Champion {
     return new Champion(
       data.id,
+      data.photo,
       data.name,
       data.position,
       data.role,

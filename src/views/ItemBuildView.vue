@@ -37,8 +37,6 @@
   </div>
 </template>
 
-
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useBuildUseCase } from '@/services/usecases/BuildUseCase'
@@ -69,13 +67,17 @@ async function generateBuildAction() {
     )
 
     if (!myChampion || !enemyChampion) {
-      error.value = 'Nie znaleziono championa.'
+      error.value = t.value.fetchBuildError
       return
     }
 
     buildItems.value = await generateBuild(myChampion.id.toString(), enemyChampion.id.toString())
-  } catch (err) {
-    error.value = 'Nie udało się pobrać builda.'
+  } catch (err: any) {
+    if (err?.response?.status === 401 || err?.response?.status === 403) {
+      error.value = t.value.loginRequiredToFetchBuild
+    } else {
+      error.value = t.value.fetchBuildError
+    }
   } finally {
     isLoading.value = false
   }

@@ -1,5 +1,12 @@
 export const translations = {
   pl: {
+    email: 'E-mail',
+    password: 'Hasło',
+    confirmPassword: 'Potwiedź Hasło',
+    logs: 'Logi',
+    logsTitle: 'Logi systemowe',
+    logsLoading: 'Ładowanie logów...',
+    logsError: 'Nie udało się pobrać logów.',
     profileTitle: 'Twój profil',
     namePlaceholder: 'Imię',
     emailPlaceholder: 'Email',
@@ -8,6 +15,8 @@ export const translations = {
     savedSuccess: 'Zapisano pomyślnie',
     requiredName: 'Imię jest wymagane.',
     invalidEmail: 'Podaj poprawny adres e-mail.',
+    loginRequiredToFetchBuild: 'Aby skorzystać z tej funkcji, musisz się zalogować.',
+    fetchBuildError: 'Nie udało się pobrać builda.',
 
     loginTitle: 'Logowanie',
     loginSubmit: 'Zaloguj',
@@ -87,6 +96,14 @@ export const translations = {
   },
 
   en: {
+    email: 'E-mail',
+    password: 'Password',
+    confirmPassword: 'Confirm Password',
+
+    logs: 'Logs',
+    logsTitle: 'System logs',
+    logsLoading: 'Loading logs...',
+    logsError: 'Failed to fetch logs.',
     profileTitle: 'Your profile',
     namePlaceholder: 'Name',
     emailPlaceholder: 'Email',
@@ -95,6 +112,8 @@ export const translations = {
     savedSuccess: 'Saved successfully',
     requiredName: 'Name is required.',
     invalidEmail: 'Please provide a valid email address.',
+    loginRequiredToFetchBuild: 'You need to be logged in to use this feature.',
+    fetchBuildError: 'Failed to fetch build.',
 
     loginTitle: 'Login',
     loginSubmit: 'Login',

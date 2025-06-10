@@ -6,10 +6,9 @@
     <p class="text-xs text-muted">
       {{ t.yourRole }}: <span class="font-semibold">{{ getReadableRole() }}</span>
     </p>
-
     <RouterLink
       to="/profile"
-      class="mt-2 w-full text-center bg-primary/90 hover:bg-primary text-white text-xs py-1 rounded transition"
+      class="mt-2 w-full text-center bg-primary/90 hover:bg-primary text-xs py-1 rounded transition"
     >
       {{ t.profileTitle }}
     </RouterLink>

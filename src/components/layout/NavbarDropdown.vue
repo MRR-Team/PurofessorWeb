@@ -6,7 +6,7 @@
     <RouterLink
       v-if="isAdmin"
       to="/admin"
-      class="mt-2 w-full text-center text-xs py-1 rounded transition text-red"
+      class="mt-2 w-full text-center bg-primary/90 hover:bg-primary text-xs py-1 rounded transition text-red"
     >
       {{ t.adminPanel }}
     </RouterLink>

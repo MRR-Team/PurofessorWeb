@@ -6,7 +6,7 @@
       <tr class="bg-primary text-white">
         <th class="p-2 border">{{ t.usersTableName }}</th>
         <th class="p-2 border">{{ t.usersTableEmail }}</th>
-        <th class="p-2 border">Hasło</th>
+        <th class="p-2 border">{{ t.password }}</th>
         <th class="p-2 border">{{ t.usersTableActions }}</th>
       </tr>
       </thead>

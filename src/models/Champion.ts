@@ -3,6 +3,7 @@ import type { IChampion } from '@/interfaces/IChampion'
 export class Champion implements IChampion {
   constructor(
     public id: number,
+    public photo: string,
     public name: string,
     public position: string,
     public role: string,

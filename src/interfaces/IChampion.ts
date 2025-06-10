@@ -1,5 +1,6 @@
 export interface IChampion {
   id: number
+  photo: string
   name: string
   position: string
   role: string

@@ -18,7 +18,8 @@
 import { reactive } from 'vue'
 import BaseInput from '@/components/shared/BaseInput.vue'
 import BaseButton from '@/components/shared/BaseButton.vue'
-
+import { useTranslation } from '@/composables/useTranslation'
+const { t } = useTranslation()
 const props = defineProps<{
   fields: ('email' | 'password' | 'confirmPassword' | 'name')[]
   submitText: string
@@ -34,10 +35,10 @@ const form = reactive<Record<string, string>>(
 )
 
 const placeholders: Record<string, string> = {
-  email: 'Email',
-  password: 'Hasło',
-  confirmPassword: 'Potwierdź hasło',
-  name: 'Imię'
+  email: t.value.email,
+  password: t.value.password,
+  confirmPassword: t.value.confirmPassword,
+  name: t.value.namePlaceholder
 }
 
 const getFieldType = (field: string): string => {

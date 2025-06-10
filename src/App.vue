@@ -1,20 +1,21 @@
 <template>
-  <TextWrapper>
+  <AppWrapper>
     <BackgroundWrapper>
       <Navbar />
-
-      <div class="w-full max-w-7xl px-4 py-6 mx-auto pt-24">
+      <MainContent>
         <RouterView />
-      </div>
+      </MainContent>
     </BackgroundWrapper>
-  </TextWrapper>
+  </AppWrapper>
 </template>
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import AppWrapper from '@/components/layout/AppWrapper.vue'
 import BackgroundWrapper from '@/components/layout/BackgroundWrapper.vue'
-import TextWrapper from '@/components/layout/TextWrapper.vue'
+import MainContent from '@/components/layout/MainContent.vue'
 import Navbar from '@/components/layout/Navbar.vue'
 import { useTheme } from '@/composables/useTheme'
+
 useTheme()
 </script>

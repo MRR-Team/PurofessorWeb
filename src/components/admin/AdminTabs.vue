@@ -4,7 +4,7 @@
     <RouterLink to="/admin/stats" class="tab" active-class="font-bold underline">{{ t.adminMenuStats }}</RouterLink>
     <RouterLink to="/admin/users" class="tab" active-class="font-bold underline">{{ t.adminMenuUsers }}</RouterLink>
     <RouterLink to="/admin/notifications" class="tab" active-class="font-bold underline">{{ t.adminMenuNotifications }}</RouterLink>
-    <RouterLink to="/admin/logs" class="tab" active-class="font-bold underline">Logi</RouterLink>
+    <RouterLink to="/admin/logs" class="tab" active-class="font-bold underline">{{t.logs}}</RouterLink>
   </nav>
 </template>
 
