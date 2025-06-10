@@ -11,10 +11,11 @@
       </tr>
       </thead>
       <tbody>
-      <UserEditableRow
+      <UserProfileRow
         v-if="currentUser"
         :user="currentUser"
         :editingUserId="editingUserId"
+        :showDelete="false"
         @startEdit="startEdit"
         @saveEdit="saveEdit"
       />
@@ -28,7 +29,8 @@ import { computed, onMounted, ref } from 'vue'
 import { useTranslation } from '@/composables/useTranslation'
 import { useUserSessionStore } from '@/stores/userSessionStore'
 import { useUserStore } from '@/stores/userStore'
-import UserEditableRow from '@/components/shared/UserProfileRow.vue'
+import UserProfileRow from "@/components/shared/UserProfileRow.vue";
+import { UserService } from '@/services/UserService'
 import type { User } from '@/models/User'
 
 const { t } = useTranslation()
@@ -36,13 +38,16 @@ const userStore = useUserStore()
 const sessionStore = useUserSessionStore()
 
 const editingUserId = ref<number | null>(null)
-
-const currentUser = computed(() =>
-  userStore.users.find(u => u.id === sessionStore.user?.id) || sessionStore.user
-)
+const currentUser = ref<User | null>(null)
 
 onMounted(async () => {
-  await userStore.fetchUsers()
+  try {
+    if (sessionStore.user) {
+      currentUser.value = await UserService.getCurrentUser(sessionStore.user.id)
+    }
+  } catch (e) {
+    console.error('Failed to load current user', e)
+  }
 })
 
 function startEdit(user: User) {
@@ -61,8 +66,10 @@ async function saveEdit(userId: number, name: string, email: string, password: s
   }
 
   try {
-    await userStore.updateUser(userId, payload)
-    await userStore.fetchUsers()
+    const updatedUser = await UserService.updateUser(userId, payload)
+    currentUser.value = updatedUser
+    sessionStore.setUser(updatedUser)
+
     editingUserId.value = null
   } catch (e: any) {
     alert(e.message || 'Error updating user')

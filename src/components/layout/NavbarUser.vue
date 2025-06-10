@@ -55,7 +55,9 @@ function logout() {
 }
 
 onMounted(async () => {
-  await userStore.fetchUsers()
+  if (sessionStore.user?.is_admin) {
+    await userStore.fetchUsers()
+  }
 })
 </script>
 
