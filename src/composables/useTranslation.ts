@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { useUiStore } from '@/stores/uiStore'
-import { translations } from '@/i18n/translations'
+import { translations } from '@/infrastructure/i18n/translations'
 
 export function useTranslation() {
   const store = useUiStore()

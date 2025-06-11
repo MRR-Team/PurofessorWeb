@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { useUiStore } from '@/stores/uiStore'
-import { LanguagePersistenceAdapter } from '@/services/adapters/LanguagePersistenceAdapter'
+import { LanguagePersistenceAdapter } from '@/application/adapters/LanguagePersistenceAdapter'
 
 export function useLanguage() {
   const store = useUiStore()

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { User } from '@/models/User'
+import type { User } from '@/domain/models/User'
 
 interface State {
   users: User[]

@@ -1,6 +1,6 @@
 import { computed, watch } from 'vue'
 import { useUiStore } from '@/stores/uiStore'
-import { ThemePersistenceAdapter } from '@/services/adapters/ThemePersistenceAdapter'
+import { ThemePersistenceAdapter } from '@/application/adapters/ThemePersistenceAdapter'
 
 export function useTheme() {
   const store = useUiStore()

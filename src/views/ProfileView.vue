@@ -28,9 +28,9 @@
 import { onMounted, ref } from 'vue'
 import { useTranslation } from '@/composables/useTranslation'
 import { useUserSessionStore } from '@/stores/userSessionStore'
-import { useProfileUseCase } from '@/services/usecases/ProfileUseCase'
+import { useProfileUseCase } from '@/application/usecases/ProfileUseCase'
 import UserProfileRow from '@/components/shared/UserProfileRow.vue'
-import { UserPersistenceAdapter } from '@/services/adapters/UserPersistenceAdapter'
+import { UserPersistenceAdapter } from '@/application/adapters/UserPersistenceAdapter'
 
 const { t } = useTranslation()
 const sessionStore = useUserSessionStore()

@@ -1,4 +1,4 @@
-import type { Champion } from '@/models/Champion'
+import type { Champion } from '@/domain/models/Champion'
 import { useTranslation } from '@/composables/useTranslation'
 
 export function getChampionImageUrl(champion: Champion): string {

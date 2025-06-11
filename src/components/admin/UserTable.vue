@@ -25,12 +25,12 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from '@/models/User'
+import type { User } from '@/domain/models/User'
 import { useUserStore } from '@/stores/userStore'
 import { useTranslation } from '@/composables/useTranslation'
 import { ref, onMounted } from 'vue'
 import UserEditableRow from '@/components/admin/UserEditableRow.vue'
-import { useUserUseCase } from '@/services/usecases/UserUseCase'
+import { useUserUseCase } from '@/application/usecases/UserUseCase'
 
 const { t } = useTranslation()
 const userStore = useUserStore()

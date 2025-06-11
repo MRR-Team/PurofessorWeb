@@ -21,7 +21,7 @@ import { computed, onMounted } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { useUserSessionStore } from '@/stores/userSessionStore'
 import { useTranslation } from '@/composables/useTranslation'
-import { useUserUseCase } from '@/services/usecases/UserUseCase'
+import { useUserUseCase } from '@/application/usecases/UserUseCase'
 
 const { t } = useTranslation()
 const userStore = useUserStore()

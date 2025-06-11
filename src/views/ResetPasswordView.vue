@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useAuthUseCase } from '@/services/usecases/AuthUseCase'
+import { useAuthUseCase } from '@/application/usecases/AuthUseCase'
 import AuthForm from '@/components/auth/AuthForm.vue'
 import { useTranslation } from '@/composables/useTranslation'
 import { ValidatorUtils } from '@/utils/ValidatorUtils'

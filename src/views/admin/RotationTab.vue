@@ -35,9 +35,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useChampionStore } from '@/stores/championStore'
-import { Champion } from '@/models/Champion'
+import { Champion } from '@/domain/models/Champion'
 import { useTranslation } from '@/composables/useTranslation'
-import { useChampionAdminUseCase } from '@/services/usecases/ChampionAdminUseCase'
+import { useChampionAdminUseCase } from '@/application/usecases/ChampionAdminUseCase'
 import { getChampionImageUrl, getReadableLane } from '@/utils/ChampionUtils'
 
 const { t } = useTranslation()

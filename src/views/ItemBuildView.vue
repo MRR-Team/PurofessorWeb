@@ -39,16 +39,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useBuildUseCase } from '@/services/usecases/BuildUseCase'
+import { useBuildUseCase } from '@/application/usecases/BuildUseCase'
 import { useChampionStore } from '@/stores/championStore'
 import ChampionAutocomplete from '@/components/shared/ChampionAutocomplete.vue'
-import type { Item } from '@/models/Item'
+import type { Item } from '@/domain/models/Item'
 import { useTranslation } from '@/composables/useTranslation'
 
 const { t } = useTranslation()
 const { generateBuild } = useBuildUseCase()
 const championStore = useChampionStore()
-import type { Champion } from '@/models/Champion'
+import type { Champion } from '@/domain/models/Champion'
 
 const selectedMyChampion = ref('')
 const selectedEnemyChampion = ref('')

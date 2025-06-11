@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { Champion } from '@/models/Champion'
+import type { Champion } from '@/domain/models/Champion'
 
 interface State {
   champions: Champion[]

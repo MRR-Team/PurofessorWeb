@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import type { User } from '@/models/User'
-import { UserPersistenceAdapter } from '@/services/adapters/UserPersistenceAdapter'
+import type { User } from '@/domain/models/User'
+import { UserPersistenceAdapter } from '@/application/adapters/UserPersistenceAdapter'
 
 interface State {
   user: User | null

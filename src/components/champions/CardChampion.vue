@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Champion } from '@/models/Champion'
+import type { Champion } from '@/domain/models/Champion'
 import { useTranslation } from '@/composables/useTranslation'
 import { getChampionImageUrl, getReadableLane } from '@/utils/ChampionUtils'
 

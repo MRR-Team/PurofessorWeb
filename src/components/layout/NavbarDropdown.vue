@@ -19,7 +19,7 @@ import { useUserStore } from '@/stores/userStore'
 import { useUserSessionStore } from '@/stores/userSessionStore'
 import { RouterLink } from 'vue-router'
 import { useTranslation } from '@/composables/useTranslation'
-import { useUserUseCase } from '@/services/usecases/UserUseCase'
+import { useUserUseCase } from '@/application/usecases/UserUseCase'
 import ThemeSwitcher from "@/components/ui/ThemeSwitcher.vue";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher.vue";
 

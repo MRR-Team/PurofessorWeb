@@ -19,7 +19,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useChampionStore } from '@/stores/championStore'
 import { useTranslation } from '@/composables/useTranslation'
-import { useChampionAdminUseCase } from '@/services/usecases/ChampionAdminUseCase'
+import { useChampionAdminUseCase } from '@/application/usecases/ChampionAdminUseCase'
 import ChampionCard from '@/components/champions/ChampionCard.vue'
 
 const { t } = useTranslation()

@@ -2,13 +2,13 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import { createPinia } from 'pinia';
 import router from './router';
-import { ChampionService } from '@/services/ChampionService.ts';
+import { ChampionService } from '@/application/services/ChampionService.ts';
 import './assets/tailwind.css'
 import { useUiStore } from '@/stores/uiStore'
-import { ThemePersistenceAdapter } from '@/services/adapters/ThemePersistenceAdapter'
-import { LanguagePersistenceAdapter } from '@/services/adapters/LanguagePersistenceAdapter'
+import { ThemePersistenceAdapter } from '@/application/adapters/ThemePersistenceAdapter'
+import { LanguagePersistenceAdapter } from '@/application/adapters/LanguagePersistenceAdapter'
 import { useUserSessionStore } from '@/stores/userSessionStore';
-import { UserPersistenceAdapter } from '@/services/adapters/UserPersistenceAdapter.ts';
+import { UserPersistenceAdapter } from '@/application/adapters/UserPersistenceAdapter.ts';
 
 const app = createApp(App);
 app.use(createPinia());

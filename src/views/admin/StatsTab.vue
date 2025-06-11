@@ -25,8 +25,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useTranslation } from '@/composables/useTranslation'
-import { useStatsUseCase } from '@/services/usecases/StatsUseCase'
-import type { CounterStat } from '@/repositories/StatsRepository'
+import { useStatsUseCase } from '@/application/usecases/StatsUseCase'
+import type { CounterStat } from '@/infrastructure/repositories/StatsRepository'
 
 const { t } = useTranslation()
 const { fetchCounterStats } = useStatsUseCase()

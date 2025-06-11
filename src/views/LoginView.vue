@@ -35,12 +35,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthUseCase } from '@/services/usecases/AuthUseCase'
+import { useAuthUseCase } from '@/application/usecases/AuthUseCase'
 import AuthForm from '@/components/auth/AuthForm.vue'
 import { useTranslation } from '@/composables/useTranslation'
 import { ValidatorUtils } from '@/utils/ValidatorUtils'
 import { useUserSessionStore } from '@/stores/userSessionStore'
-import { UserPersistenceAdapter } from '@/services/adapters/UserPersistenceAdapter'
+import { UserPersistenceAdapter } from '@/application/adapters/UserPersistenceAdapter'
 
 const { t } = useTranslation()
 const router = useRouter()

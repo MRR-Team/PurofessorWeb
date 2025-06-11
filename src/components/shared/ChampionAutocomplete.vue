@@ -34,8 +34,8 @@
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
 import BaseInput from '@/components/shared/BaseInput.vue'
 import { useChampionStore } from '@/stores/championStore'
-import { useChampionUseCase } from '@/services/usecases/ChampionUseCase'
-import type { Champion } from '@/models/Champion'
+import { useChampionUseCase } from '@/application/usecases/ChampionUseCase'
+import type { Champion } from '@/domain/models/Champion'
 
 const props = defineProps<{
   modelValue: string

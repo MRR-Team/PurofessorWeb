@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from '@/models/User'
+import type { User } from '@/domain/models/User'
 import { ref, computed, watch } from 'vue'
 import UserFieldName from '@/components/shared/UserFieldName.vue'
 import UserFieldEmail from '@/components/shared/UserFieldEmail.vue'

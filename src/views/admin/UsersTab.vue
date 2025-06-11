@@ -14,7 +14,7 @@ import { onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import UserTable from '@/components/admin/UserTable.vue'
 import { useTranslation } from '@/composables/useTranslation'
-import { useUserUseCase } from '@/services/usecases/UserUseCase'
+import { useUserUseCase } from '@/application/usecases/UserUseCase'
 
 const { t } = useTranslation()
 const userStore = useUserStore()

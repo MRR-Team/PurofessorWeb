@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { Notification } from '@/models/Notification'
+import type { Notification } from '@/domain/models/Notification'
 
 interface State {
   notifications: Notification[]

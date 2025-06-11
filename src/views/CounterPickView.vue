@@ -46,11 +46,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useCounterPickUseCase } from '@/services/usecases/CounterPickUseCase'
+import { useCounterPickUseCase } from '@/application/usecases/CounterPickUseCase'
 import { useChampionStore } from '@/stores/championStore'
 import CardChampion from '@/components/champions/CardChampion.vue'
 import ChampionAutocomplete from '@/components/shared/ChampionAutocomplete.vue'
-import type { Champion } from '@/models/Champion'
+import type { Champion } from '@/domain/models/Champion'
 import { useTranslation } from '@/composables/useTranslation'
 import { getReadableLane } from '@/utils/ChampionUtils'
 
