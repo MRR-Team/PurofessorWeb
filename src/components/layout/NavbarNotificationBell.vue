@@ -2,40 +2,20 @@
   <div class="relative">
     <button @click="toggleDropdown" class="navbar-button relative">
       🔔
-      <span
-        v-if="unreadCount > 0"
-        class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1"
-      >
+      <span v-if="unreadCount > 0" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
         {{ unreadCount }}
       </span>
     </button>
 
-    <div
-      v-if="dropdownOpen"
-      class="absolute right-0 mt-2 w-72 bg-bg-card text-body shadow-lg rounded-md p-4 z-50 border border-white/10"
-    >
-      <p v-if="notifications.length === 0" class="text-sm text-muted">
-        {{ t.notificationsEmpty }}
-      </p>
-
-      <ul v-else class="flex flex-col gap-2 max-h-64 overflow-y-auto">
-        <li
-          v-for="notification in notifications.slice(0, 5)"
-          :key="notification.id"
-          class="border-b border-muted pb-2 text-sm"
-        >
-          <p class="font-semibold">{{ notification.title }}</p>
-          <p class="text-xs text-muted">{{ notification.getFormattedDate() }}</p>
-          <p class="text-xs">{{ notification.shortPreview() }}</p>
+    <div v-if="dropdownOpen" class="absolute right-0 mt-2 w-64 bg-bg-card text-body shadow-lg rounded p-4 z-50 border border-white/10">
+      <p class="font-semibold mb-2">{{t.notifications}}</p>
+      <ul class="text-sm space-y-2 max-h-80 overflow-y-auto">
+        <li v-for="notification in notifications" :key="notification.id" class="border-b pb-1">
+          <div class="font-bold">{{ notification.title }}</div>
+          <div class="text-muted text-xs">{{ notification.getFormattedDate() }}</div>
+          <div class="text-sm mt-1">{{ notification.shortPreview() }}</div>
         </li>
       </ul>
-
-      <RouterLink
-        to="/notifications"
-        class="block mt-2 text-center text-primary underline text-xs"
-      >
-        {{ t.viewAllNotifications }}
-      </RouterLink>
     </div>
   </div>
 </template>
@@ -43,38 +23,42 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useNotificationStore } from '@/stores/notificationStore'
-import { notificationUseCase } from '@/application/usecases/NotificationUseCase'
+import { echo } from '@/infrastructure/realtime/echo'
 import { useTranslation } from '@/composables/useTranslation'
-import { RouterLink } from 'vue-router'
+import { NotificationFactory } from '@/domain/factories/NotificationFactory'
 
 const { t } = useTranslation()
 const notificationStore = useNotificationStore()
-const { fetchNotifications } = notificationUseCase()
 
 const dropdownOpen = ref(false)
 
-const notifications = computed(() => notificationStore.notifications)
+const notifications = computed(() => notificationStore.notifications.slice().reverse().slice(0, 10))
 const unreadCount = computed(() => notificationStore.notifications.length)
 
 function toggleDropdown() {
   dropdownOpen.value = !dropdownOpen.value
 }
 
-onMounted(async () => {
-  notificationStore.setLoading(true)
-  try {
-    const notificationsData = await fetchNotifications()
-    notificationStore.setNotifications(notificationsData)
-  } catch (e) {
-    notificationStore.setError('Failed to load notifications.')
-  } finally {
-    notificationStore.setLoading(false)
-  }
+onMounted(() => {
+  echo.private(`App.Models.User.${localStorage.getItem('user_id')}`)
+    .notification((notification: any) => {
+      console.log('Received notification:', notification)
+
+      const notificationModel = NotificationFactory.fromApi({
+        id: notification.id || Date.now(),
+        title: notification.title,
+        content: notification.body || notification.content,
+        type: notification.type || 'info',
+        createdAt: notification.created_at || new Date().toISOString()
+      })
+
+      notificationStore.addNotification(notificationModel)
+    })
 })
 </script>
 
 <style scoped>
 .navbar-button {
-  @apply bg-white/10 px-2 py-1 rounded hover:bg-white/20 transition relative;
+  @apply bg-white/10 px-2 py-1 rounded hover:bg-white/20 transition;
 }
 </style>
