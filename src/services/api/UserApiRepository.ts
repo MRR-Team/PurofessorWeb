@@ -18,7 +18,7 @@ export const UserApiRepository = {
     await api.delete(`/users/${userId}`)
   },
   async fetchCurrentUser(): Promise<User> {
-    const response = await api.get<IUser>('/users') // endpoint np. /user
+    const response = await api.get<IUser>('/users')
     return UserFactory.fromApi(response.data)
   },
   async getCurrentUser(userId: number): Promise<User> {

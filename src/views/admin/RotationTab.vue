@@ -32,38 +32,69 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useChampionStore } from '@/stores/championStore'
-import type { Champion } from '@/models/Champion'
+import { Champion } from '@/models/Champion'
 import { useTranslation } from '@/composables/useTranslation'
 import { useChampionAdminUseCase } from '@/services/usecases/ChampionAdminUseCase'
-import {getChampionImageUrl, getReadableLane} from "@/utils/ChampionUtils.ts";
+import { getChampionImageUrl, getReadableLane } from '@/utils/ChampionUtils'
 
 const { t } = useTranslation()
 const championStore = useChampionStore()
-const { toggleChampionAvailability } = useChampionAdminUseCase()
+const { toggleChampionAvailability, reloadChampions } = useChampionAdminUseCase()
 
-const champions = ref<Champion[]>([])
+const champions = computed(() => championStore.champions)
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 
 onMounted(async () => {
   isLoading.value = true
   try {
-    await championStore.fetchChampions()
-    champions.value = championStore.champions
+    const championsData = await reloadChampions()
+    championStore.setChampions(championsData)
   } catch (err) {
     error.value = 'Nie udało się pobrać championów.'
   } finally {
     isLoading.value = false
   }
 })
+
 async function toggleChampionAvailabilityAction(champion: Champion) {
   try {
     await toggleChampionAvailability(champion.id)
-    champion.isAvailable = !champion.isAvailable
+    championStore.updateChampion(
+      new Champion(
+        champion.id,
+        champion.photo,
+        champion.name,
+        champion.position,
+        champion.role,
+        !champion.isAvailable, // zmieniamy isAvailable
+        champion.attack_damage,
+        champion.magic_damage,
+        champion.shield,
+        champion.heals,
+        champion.tanky,
+        champion.squishy,
+        champion.has_cc,
+        champion.dash,
+        champion.poke,
+        champion.can_one_shot,
+        champion.late_game,
+        champion.is_good_against_attack_damage,
+        champion.is_good_against_magic_damage,
+        champion.is_good_against_shield,
+        champion.is_good_against_heals,
+        champion.is_good_against_tanky,
+        champion.is_good_against_squish,
+        champion.is_good_against_has_cc,
+        champion.is_good_against_dash,
+        champion.is_good_against_poke,
+        champion.is_good_against_can_one_shot,
+        champion.is_good_against_late_game
+      )
+    )
   } catch (err) {
     console.error('Błąd podczas zmiany dostępności championa:', err)
     alert('Nie udało się zmienić dostępności championa.')

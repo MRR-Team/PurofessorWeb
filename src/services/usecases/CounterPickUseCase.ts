@@ -1,9 +1,11 @@
-import { CounterRepository } from '@/repositories/CounterRepository'
+import { CounterService } from '@/services/CounterService'
 import type { Champion } from '@/models/Champion'
 
 export function useCounterPickUseCase() {
+  const counterService = new CounterService()
+
   async function generateCounter(role: string, enemyChampionId: string): Promise<Champion[]> {
-    return CounterRepository.fetchCounter(role, enemyChampionId)
+    return counterService.loadCounter(role, enemyChampionId)
   }
 
   return {

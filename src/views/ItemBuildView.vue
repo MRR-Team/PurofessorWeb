@@ -44,14 +44,23 @@ import { useChampionStore } from '@/stores/championStore'
 import ChampionAutocomplete from '@/components/shared/ChampionAutocomplete.vue'
 import type { Item } from '@/models/Item'
 import { useTranslation } from '@/composables/useTranslation'
+
 const { t } = useTranslation()
 const { generateBuild } = useBuildUseCase()
 const championStore = useChampionStore()
+import type { Champion } from '@/models/Champion'
+
 const selectedMyChampion = ref('')
 const selectedEnemyChampion = ref('')
 const buildItems = ref<Item[]>([])
 const isLoading = ref(false)
 const error = ref<string | null>(null)
+
+function getChampionByName(name: string): Champion | undefined {
+  return championStore.champions.find(c =>
+    c.name.toLowerCase() === name.trim().toLowerCase()
+  )
+}
 
 async function generateBuildAction() {
   isLoading.value = true
@@ -59,12 +68,8 @@ async function generateBuildAction() {
   buildItems.value = []
 
   try {
-    const myChampion = championStore.champions.find(c =>
-      c.name.toLowerCase() === selectedMyChampion.value.trim().toLowerCase()
-    )
-    const enemyChampion = championStore.champions.find(c =>
-      c.name.toLowerCase() === selectedEnemyChampion.value.trim().toLowerCase()
-    )
+    const myChampion = getChampionByName(selectedMyChampion.value)
+    const enemyChampion = getChampionByName(selectedEnemyChampion.value)
 
     if (!myChampion || !enemyChampion) {
       error.value = t.value.fetchBuildError
@@ -83,3 +88,4 @@ async function generateBuildAction() {
   }
 }
 </script>
+

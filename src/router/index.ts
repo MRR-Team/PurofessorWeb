@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import LoginView from '@/views/LoginView.vue'
 import { useUserSessionStore } from '@/stores/userSessionStore'
+import RegisterSuccessView from '@/views/RegisterSuccessView.vue'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/login' },
@@ -15,7 +16,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/RegisterView.vue'),
     meta: { guestOnly: true }
   },
-
+  {
+    path: '/register-success',
+    component: RegisterSuccessView,
+    meta: { guestOnly: true }
+  },
   {
     path: '/reset-password',
     component: () => import('@/views/ResetPasswordView.vue'),

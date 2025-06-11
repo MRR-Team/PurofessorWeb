@@ -46,7 +46,7 @@ const onRegister = async (form: Record<string, string>) => {
 
   try {
     await register(form.name, form.email, form.password, form.confirmPassword)
-    router.push('/login')
+    await router.push('/register-success')
   } catch (e: any) {
     error.value = e.message || 'Błąd rejestracji'
   } finally {

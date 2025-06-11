@@ -22,10 +22,9 @@ import { useTranslation } from '@/composables/useTranslation'
 import { getChampionImageUrl, getReadableLane } from '@/utils/ChampionUtils'
 
 const { t } = useTranslation()
-const props = defineProps<{
+defineProps<{
   champion: Champion
-}>()
-
+}>();
 </script>
 
 <style scoped>

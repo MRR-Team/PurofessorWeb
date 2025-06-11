@@ -1,41 +1,18 @@
 import { AuthApiRepository } from '@/services/api/AuthApiRepository'
 import { GoogleAuthApiRepository } from '@/services/api/GoogleAuthApiRepository'
 import { UserFactory } from '@/factories/UserFactory'
-import { UserPersistenceAdapter } from '@/services/adapters/UserPersistenceAdapter'
-import { useUserSessionStore } from '@/stores/userSessionStore'
+import type { User } from '@/models/User'
 
 export function useAuthUseCase() {
-  const store = useUserSessionStore()
+  async function login(email: string, password: string): Promise<{ token: string; user: User }> {
+    const response = await AuthApiRepository.login({ email, password })
+    const { token, user } = response.data
+    const userModel = UserFactory.fromApi(user)
 
-  async function login(email: string, password: string) {
-    store.setLoading(true)
-    store.setError(null)
-
-    try {
-      const response = await AuthApiRepository.login({ email, password })
-      const { token, user } = response.data
-
-      const userModel = UserFactory.fromApi(user)
-
-      store.setUser(user)
-      store.setToken(token)
-
-      UserPersistenceAdapter.saveUser(userModel)
-      UserPersistenceAdapter.saveToken(token)
-    } catch (e: any) {
-      if (e?.response?.status === 401) {
-        store.setError('Nieprawidłowy email lub hasło.')
-      } else if (e?.response?.status === 422) {
-        store.setError('Wprowadź poprawne dane.')
-      } else {
-        store.setError('Wystąpił błąd logowania.')
-      }
-    } finally {
-      store.setLoading(false)
-    }
+    return { token, user: userModel }
   }
 
-  async function register(name: string, email: string, password: string, confirmPassword: string) {
+  async function register(name: string, email: string, password: string, confirmPassword: string): Promise<void> {
     if (password !== confirmPassword) {
       throw new Error('Hasła się nie zgadzają')
     }
@@ -43,7 +20,7 @@ export function useAuthUseCase() {
     await AuthApiRepository.register({ name, email, password, password_confirmation: confirmPassword })
   }
 
-  async function resetPassword(email: string) {
+  async function resetPassword(email: string): Promise<void> {
     await AuthApiRepository.resetPassword(email)
   }
 
@@ -52,7 +29,7 @@ export function useAuthUseCase() {
     window.location.href = redirectUrl
   }
 
-  function processGoogleCallback(): { token: string; user: any } | null {
+  function processGoogleCallback(): { token: string; user: User } | null {
     const urlParams = new URLSearchParams(window.location.search)
     const token = urlParams.get('token')
     const userParam = urlParams.get('user')
@@ -60,13 +37,6 @@ export function useAuthUseCase() {
     if (token && userParam) {
       try {
         const user = UserFactory.fromApi(JSON.parse(decodeURIComponent(userParam)))
-
-        store.setUser(user)
-        store.setToken(token)
-
-        UserPersistenceAdapter.saveUser(user)
-        UserPersistenceAdapter.saveToken(token)
-
         return { token, user }
       } catch (e) {
         console.error('Błąd parsowania usera z Google OAuth:', e)
@@ -77,11 +47,16 @@ export function useAuthUseCase() {
     return null
   }
 
+  async function logout(): Promise<void> {
+    await AuthApiRepository.logout()
+  }
+
   return {
     login,
     register,
     resetPassword,
     loginWithGoogle,
-    processGoogleCallback
+    processGoogleCallback,
+    logout
   }
 }

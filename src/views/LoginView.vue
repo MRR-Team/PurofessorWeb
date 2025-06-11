@@ -39,9 +39,13 @@ import { useAuthUseCase } from '@/services/usecases/AuthUseCase'
 import AuthForm from '@/components/auth/AuthForm.vue'
 import { useTranslation } from '@/composables/useTranslation'
 import { ValidatorUtils } from '@/utils/ValidatorUtils'
+import { useUserSessionStore } from '@/stores/userSessionStore'
+import { UserPersistenceAdapter } from '@/services/adapters/UserPersistenceAdapter'
 
 const { t } = useTranslation()
 const router = useRouter()
+const sessionStore = useUserSessionStore()
+
 const { login, loginWithGoogle, processGoogleCallback } = useAuthUseCase()
 
 const isLoading = ref(false)
@@ -59,8 +63,15 @@ const onLogin = async (form: Record<string, string>) => {
   }
 
   try {
-    await login(form.email, form.password)
-    router.push('/dashboard')
+    const { token, user } = await login(form.email, form.password)
+
+    sessionStore.setUser(user)
+    sessionStore.setToken(token)
+
+    UserPersistenceAdapter.saveUser(user)
+    UserPersistenceAdapter.saveToken(token)
+
+    await router.push('/dashboard')
   } catch (e: any) {
     error.value = e.message || 'Wystąpił błąd logowania.'
   } finally {
@@ -79,7 +90,14 @@ function validateLoginForm(form: Record<string, string>): string | null {
 onMounted(() => {
   const result = processGoogleCallback()
   if (result) {
+    sessionStore.setUser(result.user)
+    sessionStore.setToken(result.token)
+
+    UserPersistenceAdapter.saveUser(result.user)
+    UserPersistenceAdapter.saveToken(result.token)
+
     router.replace('/dashboard')
   }
 })
 </script>
+

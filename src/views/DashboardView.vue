@@ -21,9 +21,12 @@ import { computed, onMounted } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { useUserSessionStore } from '@/stores/userSessionStore'
 import { useTranslation } from '@/composables/useTranslation'
+import { useUserUseCase } from '@/services/usecases/UserUseCase'
+
 const { t } = useTranslation()
 const userStore = useUserStore()
 const sessionStore = useUserSessionStore()
+const { fetchUsers } = useUserUseCase()
 
 const currentUser = computed(() =>
   userStore.users.find(u => u.id === sessionStore.user?.id) || sessionStore.user
@@ -36,7 +39,8 @@ function getReadableRole(): string {
 
 onMounted(async () => {
   if (sessionStore.user?.is_admin) {
-    await userStore.fetchUsers()
+    const usersData = await fetchUsers()
+    userStore.setUsers(usersData)
   }
 })
 </script>

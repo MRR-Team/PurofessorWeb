@@ -1,13 +1,14 @@
-import { ChampionRepository } from '@/repositories/ChampionRepository'
-import api from '@/services/axios'
+import { ChampionService } from '@/services/ChampionService'
 
 export function useChampionAdminUseCase() {
+  const championService = new ChampionService()
+
   async function toggleChampionAvailability(championId: number): Promise<void> {
-    await api.patch(`/champions/${championId}/toggle-availability`)
+    await championService.toggleChampionAvailability(championId)
   }
 
   async function reloadChampions() {
-    return ChampionRepository.getAll()
+    return championService.loadChampions()
   }
 
   return {

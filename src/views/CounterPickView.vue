@@ -66,15 +66,19 @@ const counterChampions = ref<Champion[]>([])
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 
+function getChampionByName(name: string): Champion | undefined {
+  return championStore.champions.find(c =>
+    c.name.toLowerCase() === name.trim().toLowerCase()
+  )
+}
+
 async function generateCounterAction() {
   isLoading.value = true
   error.value = null
   counterChampions.value = []
 
   try {
-    const enemyChampion = championStore.champions.find(c =>
-      c.name.toLowerCase() === selectedEnemyChampion.value.trim().toLowerCase()
-    )
+    const enemyChampion = getChampionByName(selectedEnemyChampion.value)
 
     if (!enemyChampion) {
       error.value = 'Nie znaleziono takiego championa.'
@@ -89,3 +93,4 @@ async function generateCounterAction() {
   }
 }
 </script>
+

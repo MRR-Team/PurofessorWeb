@@ -28,17 +28,22 @@
 import type { User } from '@/models/User'
 import { useUserStore } from '@/stores/userStore'
 import { useTranslation } from '@/composables/useTranslation'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import UserEditableRow from '@/components/admin/UserEditableRow.vue'
+import { useUserUseCase } from '@/services/usecases/UserUseCase'
 
 const { t } = useTranslation()
 const userStore = useUserStore()
-
-defineProps<{
-  users: User[]
-}>()
+const { fetchUsers, updateUser, deleteUser: deleteUserUseCase } = useUserUseCase()
 
 const editingUserId = ref<number | null>(null)
+
+onMounted(async () => {
+  const usersData = await fetchUsers()
+  userStore.setUsers(usersData)
+})
+
+const users = userStore.users
 
 function startEdit(user: User) {
   editingUserId.value = user.id
@@ -56,8 +61,8 @@ async function saveEdit(userId: number, name: string, email: string, password: s
   }
 
   try {
-    await userStore.updateUser(userId, payload)
-    await userStore.fetchUsers()
+    const updatedUser = await updateUser(userId, payload)
+    userStore.updateUser(updatedUser)
     editingUserId.value = null
   } catch (e: any) {
     alert(e.message || 'Error updating user')
@@ -66,7 +71,9 @@ async function saveEdit(userId: number, name: string, email: string, password: s
 
 async function deleteUser(userId: number) {
   if (confirm('Czy na pewno chcesz usunąć użytkownika?')) {
-    await userStore.deleteUser(userId)
+    await deleteUserUseCase(userId)
+    const usersData = await fetchUsers()
+    userStore.setUsers(usersData)
   }
 }
 </script>

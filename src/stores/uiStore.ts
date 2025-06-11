@@ -1,20 +1,23 @@
 import { defineStore } from 'pinia'
-import { ThemeService } from '@/services/ThemeService'
-import { LanguageService } from '@/services/LanguageService'
+
+interface State {
+  theme: string
+  language: string
+}
 
 export const useUiStore = defineStore('ui', {
-  state: () => ({
-    theme: ThemeService.getTheme(),
-    language: LanguageService.getLanguage()
+  state: (): State => ({
+    theme: 'light',
+    language: 'pl'
   }),
+
   actions: {
     setTheme(newTheme: string) {
       this.theme = newTheme
-      ThemeService.saveTheme(newTheme)
     },
+
     setLanguage(newLang: string) {
       this.language = newLang
-      LanguageService.saveLanguage(newLang)
     }
   }
 })

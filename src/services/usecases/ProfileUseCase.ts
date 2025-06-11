@@ -1,11 +1,9 @@
 import { UserService } from '@/services/UserService'
-import { useUserSessionStore } from '@/stores/userSessionStore'
 import { ValidatorUtils } from '@/utils/ValidatorUtils'
-import { UserPersistenceAdapter } from '@/services/adapters/UserPersistenceAdapter'
-import { User } from '@/models/User'
+import type { User } from '@/models/User'
 
 export function useProfileUseCase() {
-  const store = useUserSessionStore()
+  const userService = new UserService()
 
   function validateProfileData(name: string, email: string): string | null {
     return (
@@ -15,29 +13,18 @@ export function useProfileUseCase() {
     )
   }
 
-  async function updateProfile(name: string, email: string): Promise<void> {
-    if (!store.user) {
-      throw new Error('Brak użytkownika w sesji.')
-    }
+  async function updateProfile(userId: number, name: string, email: string): Promise<User> {
+    const updatedUser = await userService.updateUser(userId, { name, email })
+    return updatedUser
+  }
 
-    const updatedUser = await UserService.updateUser(store.user.id, {
-      name,
-      email
-    })
-
-    const mergedUser = new User(
-      updatedUser.id,
-      updatedUser.name,
-      updatedUser.email,
-      store.user.is_admin
-    )
-
-    store.setUser(mergedUser)
-    UserPersistenceAdapter.saveUser(mergedUser)
+  async function fetchCurrentUser(userId: number): Promise<User> {
+    return userService.getCurrentUser(userId)
   }
 
   return {
     validateProfileData,
-    updateProfile
+    updateProfile,
+    fetchCurrentUser
   }
 }

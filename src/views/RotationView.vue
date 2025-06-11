@@ -18,22 +18,23 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useChampionStore } from '@/stores/championStore'
-import type { Champion } from '@/models/Champion'
 import { useTranslation } from '@/composables/useTranslation'
-import ChampionCard from '@/components/champions/ChampionCard.vue'  // zmiana: używamy ChampionCard.vue
+import { useChampionAdminUseCase } from '@/services/usecases/ChampionAdminUseCase'
+import ChampionCard from '@/components/champions/ChampionCard.vue'
+
 const { t } = useTranslation()
-
 const championStore = useChampionStore()
+const { reloadChampions } = useChampionAdminUseCase()
 
-const champions = ref<Champion[]>([])
+const champions = computed(() => championStore.champions)
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 
 onMounted(async () => {
   isLoading.value = true
   try {
-    await championStore.fetchChampions()
-    champions.value = championStore.champions
+    const championsData = await reloadChampions()
+    championStore.setChampions(championsData)
   } catch (err) {
     error.value = 'Nie udało się pobrać championów.'
   } finally {

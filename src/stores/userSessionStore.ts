@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia'
 import type { User } from '@/models/User'
-import { UserFactory } from '@/factories/UserFactory'
-import type { IUser } from '@/interfaces/IUser'
 import { UserPersistenceAdapter } from '@/services/adapters/UserPersistenceAdapter'
 
 interface State {
@@ -20,14 +18,12 @@ export const useUserSessionStore = defineStore('userSession', {
   }),
 
   actions: {
-    setUser(rawUser: IUser) {
-      this.user = UserFactory.fromApi(rawUser)
-      UserPersistenceAdapter.saveUser(this.user)
+    setUser(user: User) {
+      this.user = user
     },
 
     setToken(token: string) {
       this.token = token
-      UserPersistenceAdapter.saveToken(token)
     },
 
     setLoading(value: boolean) {

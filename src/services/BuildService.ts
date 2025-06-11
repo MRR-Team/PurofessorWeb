@@ -1,8 +1,10 @@
+import type { Item } from '@/models/Item'
 import { BuildRepository } from '@/repositories/BuildRepository'
-import type { IItem } from '@/interfaces/IItem'
 
 export class BuildService {
-  static async loadBuild(myChampionId: string, enemyChampionId: string): Promise<IItem[]> {
-    return BuildRepository.fetchBuild(myChampionId, enemyChampionId)
+  constructor(private readonly buildRepository = new BuildRepository()) {}
+
+  async loadBuild(myChampionId: string, enemyChampionId: string): Promise<Item[]> {
+    return this.buildRepository.fetchBuild(myChampionId, enemyChampionId)
   }
 }

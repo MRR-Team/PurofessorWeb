@@ -34,6 +34,7 @@
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
 import BaseInput from '@/components/shared/BaseInput.vue'
 import { useChampionStore } from '@/stores/championStore'
+import { useChampionUseCase } from '@/services/usecases/ChampionUseCase'
 import type { Champion } from '@/models/Champion'
 
 const props = defineProps<{
@@ -47,13 +48,14 @@ const emit = defineEmits<{
 }>()
 
 const championStore = useChampionStore()
+const { fetchChampions } = useChampionUseCase()
 
 const searchInput = ref(props.modelValue)
 const showDropdown = ref(false)
 
 onMounted(async () => {
   if (championStore.champions.length === 0) {
-    await championStore.fetchChampions()
+    await fetchChampions()
   }
 })
 

@@ -7,8 +7,4 @@ export class User implements IUser{
     public email: string,
     public is_admin: boolean
   ) {}
-
-  getDisplayName(): string {
-    return this.name || this.email
-  }
 }

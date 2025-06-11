@@ -1,5 +1,5 @@
 import api from '@/services/axios.ts'
-import type { LoginPayload, RegisterPayload } from '@/types/AuthTypes.ts'
+import type { LoginPayload, RegisterPayload } from '@/interfaces/IAuth.ts'
 
 export const AuthApiRepository = {
   async login(payload: LoginPayload) {
@@ -10,5 +10,8 @@ export const AuthApiRepository = {
   },
   async resetPassword(email: string) {
     return await api.post('/forgot-password', { email })
+  },
+  async logout() {
+    return await api.post('/logout')
   }
 }

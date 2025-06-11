@@ -1,15 +1,15 @@
 import api from '@/services/axios'
 import { NotificationFactory } from '@/factories/NotificationFactory'
-import type { Notification } from '@/models/Notification'
 import type { INotification } from '@/interfaces/INotification'
+import type { Notification } from '@/models/Notification'
 
-export class NotificationRepository {
-  static async getAll(): Promise<Notification[]> {
+export const NotificationRepository = {
+  async getAll(): Promise<Notification[]> {
     const response = await api.get<INotification[]>('/notifications')
-    return response.data.map(item => NotificationFactory.fromApi(item))
-  }
+    return response.data.map(NotificationFactory.fromApi)
+  },
 
-  static async getById(id: number): Promise<Notification> {
+  async getById(id: number): Promise<Notification> {
     const response = await api.get<INotification>(`/notifications/${id}`)
     return NotificationFactory.fromApi(response.data)
   }

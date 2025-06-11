@@ -14,7 +14,7 @@
 <script setup lang="ts">
 defineOptions({ inheritAttrs: false })
 
-const props = defineProps<{
+defineProps<{
   modelValue: string
   type?: string
   placeholder?: string

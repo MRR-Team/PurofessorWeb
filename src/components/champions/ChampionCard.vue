@@ -29,15 +29,12 @@ const props = defineProps<{
   champion: Champion
 }>()
 
-// Reactive fallback url
 const championImageUrl = ref(getChampionImageUrl(props.champion))
 
-// Watch champion change → update img src
 watch(() => props.champion, (newChampion) => {
   championImageUrl.value = getChampionImageUrl(newChampion)
 })
 
-// Handle img load error → fallback
 function onImageError(event: Event) {
   const target = event.target as HTMLImageElement
   target.src = '/default-champion.png'

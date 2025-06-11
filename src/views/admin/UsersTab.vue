@@ -9,16 +9,41 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import UserTable from '@/components/admin/UserTable.vue'
 import { useTranslation } from '@/composables/useTranslation'
+import { useUserUseCase } from '@/services/usecases/UserUseCase'
+
 const { t } = useTranslation()
 const userStore = useUserStore()
+const { fetchUsers, updateUser } = useUserUseCase()
+
+const editingUserId = ref<number | null>(null)
 
 onMounted(async () => {
-  await userStore.fetchUsers()
+  const usersData = await fetchUsers()
+  userStore.setUsers(usersData)
 })
+
+async function saveEdit(userId: number, name: string, email: string, password: string) {
+  if (!name.trim() || !email.trim()) {
+    alert('Name and Email cannot be empty!')
+    return
+  }
+
+  const payload: any = { name, email }
+  if (password.trim()) {
+    payload.password = password
+  }
+
+  try {
+    const updatedUser = await updateUser(userId, payload)
+    userStore.updateUser(updatedUser)
+    editingUserId.value = null
+  } catch (e: any) {
+    alert(e.message || 'Error updating user')
+  }
+}
 </script>

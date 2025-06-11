@@ -1,12 +1,14 @@
-import { ChampionRepository } from '@/repositories/ChampionRepository'
 import type { Champion } from '@/models/Champion'
+import { ChampionRepository } from '@/repositories/ChampionRepository'
 
 export class ChampionService {
-  static async loadChampions(): Promise<Champion[]> {
-    return ChampionRepository.getAll()
+  constructor(private readonly championRepository = ChampionRepository) {}
+
+  async loadChampions(): Promise<Champion[]> {
+    return this.championRepository.getAll()
   }
 
-  static async loadChampionById(id: number): Promise<Champion> {
-    return ChampionRepository.getById(id)
+  async toggleChampionAvailability(championId: number): Promise<void> {
+    await this.championRepository.toggleAvailability(championId)
   }
 }

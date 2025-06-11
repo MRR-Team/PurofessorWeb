@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { Notification } from '@/models/Notification'
 
-type State = {
+interface State {
   notifications: Notification[]
   isLoading: boolean
   error: string | null

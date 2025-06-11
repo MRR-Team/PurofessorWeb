@@ -1,11 +1,14 @@
+import type { ICounterStat } from '@/interfaces/ICounterStat'
 import { StatsRepository } from '@/repositories/StatsRepository'
-import type { CounterStat } from '@/repositories/StatsRepository'
 
 export class StatsService {
-  static async loadCounterSearchStats(): Promise<CounterStat[]> {
-    return StatsRepository.fetchCounterSearchStats()
+  constructor(private readonly statsRepository = StatsRepository) {}
+
+  async loadCounterSearchStats(): Promise<ICounterStat[]> {
+    return this.statsRepository.fetchCounterSearchStats()
   }
-  static async loadLogs(): Promise<string[]> {
-    return StatsRepository.fetchLogs()
+
+  async loadLogs(): Promise<string[]> {
+    return this.statsRepository.fetchLogs()
   }
 }

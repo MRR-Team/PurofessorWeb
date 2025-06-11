@@ -14,15 +14,33 @@
 </template>
 
 <script setup lang="ts">
-import ThemeSwitcher from '@/components/ui/ThemeSwitcher.vue'
-import LanguageSwitcher from '@/components/ui/LanguageSwitcher.vue'
-import { RouterLink } from 'vue-router'
+import { computed, onMounted } from 'vue'
+import { useUserStore } from '@/stores/userStore'
 import { useUserSessionStore } from '@/stores/userSessionStore'
+import { RouterLink } from 'vue-router'
 import { useTranslation } from '@/composables/useTranslation'
-const { t } = useTranslation()
-const store = useUserSessionStore()
-const isAdmin = store.user?.is_admin === true
+import { useUserUseCase } from '@/services/usecases/UserUseCase'
+import ThemeSwitcher from "@/components/ui/ThemeSwitcher.vue";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher.vue";
 
+const { t } = useTranslation()
+const userStore = useUserStore()
+const sessionStore = useUserSessionStore()
+const { fetchUsers } = useUserUseCase()
+
+computed(() =>
+  userStore.users.find(u => u.id === sessionStore.user?.id) || sessionStore.user
+)
+
+const isAdmin = computed(() => sessionStore.user?.is_admin === true)
+
+
+onMounted(async () => {
+  if (sessionStore.user?.is_admin) {
+    const usersData = await fetchUsers()
+    userStore.setUsers(usersData)
+  }
+})
 </script>
 
 <style scoped>

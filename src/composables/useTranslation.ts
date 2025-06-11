@@ -9,7 +9,6 @@ export function useTranslation() {
     const lang = store.language
     return translations[lang as keyof typeof translations]
   })
-
   return {
     t
   }

@@ -32,7 +32,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useNotificationStore } from '@/stores/notificationStore'
-import { notificationUseCase } from '@/services/usecases/NotificationUseCase.ts'
+import {notificationUseCase} from "@/services/usecases/NotificationUseCase.ts";
+
 
 const store = useNotificationStore()
 const { fetchNotifications } = notificationUseCase()

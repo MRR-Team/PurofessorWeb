@@ -25,33 +25,32 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useTranslation } from '@/composables/useTranslation'
 import { useUserSessionStore } from '@/stores/userSessionStore'
-import { useUserStore } from '@/stores/userStore'
-import UserProfileRow from "@/components/shared/UserProfileRow.vue";
-import { UserService } from '@/services/UserService'
-import type { User } from '@/models/User'
+import { useProfileUseCase } from '@/services/usecases/ProfileUseCase'
+import UserProfileRow from '@/components/shared/UserProfileRow.vue'
+import { UserPersistenceAdapter } from '@/services/adapters/UserPersistenceAdapter'
 
 const { t } = useTranslation()
-const userStore = useUserStore()
 const sessionStore = useUserSessionStore()
+const { updateProfile, validateProfileData, fetchCurrentUser } = useProfileUseCase()
 
 const editingUserId = ref<number | null>(null)
-const currentUser = ref<User | null>(null)
+const currentUser = ref(sessionStore.user)
 
 onMounted(async () => {
-  try {
-    if (sessionStore.user) {
-      currentUser.value = await UserService.getCurrentUser(sessionStore.user.id)
-    }
-  } catch (e) {
-    console.error('Failed to load current user', e)
+  if (sessionStore.user) {
+    currentUser.value = await fetchCurrentUser(sessionStore.user.id)
+    sessionStore.setUser(currentUser.value)
+    UserPersistenceAdapter.saveUser(currentUser.value)
   }
 })
 
-function startEdit(user: User) {
-  editingUserId.value = user.id
+function startEdit(user: typeof currentUser.value) {
+  if (user) {
+    editingUserId.value = user.id
+  }
 }
 
 async function saveEdit(userId: number, name: string, email: string, password: string) {
@@ -60,15 +59,17 @@ async function saveEdit(userId: number, name: string, email: string, password: s
     return
   }
 
-  const payload: any = { name, email }
-  if (password.trim()) {
-    payload.password = password
+  const validationError = validateProfileData(name, email)
+  if (validationError) {
+    alert(validationError)
+    return
   }
 
   try {
-    const updatedUser = await UserService.updateUser(userId, payload)
+    const updatedUser = await updateProfile(userId, name, email)
     currentUser.value = updatedUser
     sessionStore.setUser(updatedUser)
+    UserPersistenceAdapter.saveUser(updatedUser)
 
     editingUserId.value = null
   } catch (e: any) {
@@ -76,3 +77,4 @@ async function saveEdit(userId: number, name: string, email: string, password: s
   }
 }
 </script>
+

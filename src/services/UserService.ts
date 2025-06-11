@@ -1,26 +1,24 @@
-import { UserApiRepository } from '@/services/api/UserApiRepository'
 import type { User } from '@/models/User'
+import type { IUser } from '@/interfaces/IUser'
+import { UserApiRepository } from '@/services/api/UserApiRepository'
 
 export class UserService {
-  static async loadUsers(): Promise<User[]> {
-    return UserApiRepository.getAll()
+  constructor(private readonly userApiRepository = UserApiRepository) {}
+
+  async loadUsers(): Promise<User[]> {
+    return this.userApiRepository.getAll()
   }
 
-  static async updateUser(userId: number, payload: Partial<User>): Promise<User> {
-    await UserApiRepository.updateUser(userId, payload)
-    return UserApiRepository.getCurrentUser(userId)
+  async updateUser(userId: number, payload: Partial<IUser>): Promise<User> {
+    await this.userApiRepository.updateUser(userId, payload)
+    return this.userApiRepository.getCurrentUser(userId)
   }
 
-
-  static async deleteUser(userId: number): Promise<void> {
-    return UserApiRepository.deleteUser(userId)
-  }
-  static async fetchCurrentUser(): Promise<User> {
-    return UserApiRepository.fetchCurrentUser()
-  }
-  static async getCurrentUser(userId: number): Promise<User> {
-    return UserApiRepository.getCurrentUser(userId)
+  async deleteUser(userId: number): Promise<void> {
+    return this.userApiRepository.deleteUser(userId)
   }
 
-
+  async getCurrentUser(userId: number): Promise<User> {
+    return this.userApiRepository.getCurrentUser(userId)
+  }
 }

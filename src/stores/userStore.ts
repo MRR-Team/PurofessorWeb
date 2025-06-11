@@ -1,8 +1,5 @@
 import { defineStore } from 'pinia'
 import type { User } from '@/models/User'
-import { UserService } from '@/services/UserService'
-import { useUserSessionStore } from '@/stores/userSessionStore'
-import { UserPersistenceAdapter } from '@/services/adapters/UserPersistenceAdapter'
 
 interface State {
   users: User[]
@@ -18,44 +15,27 @@ export const useUserStore = defineStore('users', {
   }),
 
   actions: {
-    async fetchUsers() {
-      this.isLoading = true
-      this.error = null
+    setUsers(users: User[]) {
+      this.users = users
+    },
 
-      try {
-        this.users = await UserService.loadUsers()
-      } catch (err: unknown) {
-        this.error = err instanceof Error ? err.message : 'Nie udało się pobrać użytkowników.'
-      } finally {
-        this.isLoading = false
+    updateUser(updatedUser: User) {
+      const index = this.users.findIndex(u => u.id === updatedUser.id)
+      if (index !== -1) {
+        this.users[index] = updatedUser
       }
     },
 
-    async updateUser(userId: number, payload: Partial<User>) {
-      try {
-        const updatedUser = await UserService.updateUser(userId, payload)
-        const index = this.users.findIndex(u => u.id === userId)
-        if (index !== -1) {
-          this.users[index] = updatedUser
-        }
-
-        const userSession = useUserSessionStore()
-        if (userSession.user?.id === updatedUser.id) {
-          userSession.setUser(updatedUser)
-          UserPersistenceAdapter.saveUser(updatedUser)
-        }
-      } catch (err: unknown) {
-        console.error('Nie udało się zaktualizować użytkownika:', err)
-      }
+    deleteUser(userId: number) {
+      this.users = this.users.filter(user => user.id !== userId)
     },
 
-    async deleteUser(userId: number) {
-      try {
-        await UserService.deleteUser(userId)
-        this.users = this.users.filter(user => user.id !== userId)
-      } catch (err: unknown) {
-        console.error('Nie udało się usunąć użytkownika:', err)
-      }
+    setLoading(isLoading: boolean) {
+      this.isLoading = isLoading
+    },
+
+    setError(error: string | null) {
+      this.error = error
     }
   }
 })
