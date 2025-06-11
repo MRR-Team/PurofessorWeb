@@ -1,6 +1,4 @@
 import { User } from '@/domain/models/User'
-import {useTranslation} from "@/composables/useTranslation.ts";
-const { t } = useTranslation()
 
 const USER_KEY = 'user'
 const TOKEN_KEY = 'token'
@@ -24,7 +22,7 @@ export const UserPersistenceAdapter = {
       const parsed = JSON.parse(data)
       return new User(parsed.id, parsed.name, parsed.email, parsed.is_admin)
     } catch (e) {
-      console.error(t.value.failedToParse, e)
+      console.error('Failed to parse user from localStorage:', e)
       return null
     }
   },

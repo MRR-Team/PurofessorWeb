@@ -2,8 +2,6 @@ import { AuthRepository } from '@/infrastructure/repositories/AuthRepository.ts'
 import { GoogleAuthRepository } from '@/infrastructure/repositories/GoogleAuthRepository.ts'
 import { UserFactory } from '@/domain/factories/UserFactory'
 import type { User } from '@/domain/models/User'
-import {useTranslation} from "@/composables/useTranslation.ts";
-const { t } = useTranslation()
 
 export function useAuthUseCase() {
   async function login(email: string, password: string): Promise<{ token: string; user: User }> {
@@ -16,7 +14,7 @@ export function useAuthUseCase() {
 
   async function register(name: string, email: string, password: string, confirmPassword: string): Promise<void> {
     if (password !== confirmPassword) {
-      throw new Error(t.value.passwordsDoNotMatch)
+      throw new Error('Hasła się nie zgadzają')
     }
 
     await AuthRepository.register({ name, email, password, password_confirmation: confirmPassword })

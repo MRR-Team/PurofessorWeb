@@ -1,11 +1,8 @@
-import {useTranslation} from "@/composables/useTranslation.ts";
-
-const { t } = useTranslation()
-
 export class ValidatorUtils {
+
   static validateName(name: string): string | null {
     if (!name.trim()) {
-      return t.value.requiredName
+      return 'Imię jest wymagane.'
     }
     return null
   }
@@ -13,14 +10,14 @@ export class ValidatorUtils {
   static validateEmail(email: string): string | null {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!email.trim() || !emailPattern.test(email)) {
-      return t.value.invalidEmail
+      return 'Podaj poprawny adres e-mail.'
     }
     return null
   }
 
   static validatePassword(password: string): string | null {
     if (!password || password.length < 6) {
-      return t.value.passwordMustBe
+      return 'Hasło musi mieć co najmniej 6 znaków.'
     }
     return null
   }
