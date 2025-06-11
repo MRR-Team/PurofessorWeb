@@ -1,6 +1,8 @@
 export const translations = {
   pl: {
     notifications: "Powiadomienia",
+    loadingNotifications: "Ładowanie powiadomien",
+    noNotifications: "Brak powiadomień",
     registerSuccessTitle: 'Rejestracja zakończona!',
     registerSuccessDescription: 'Sprawdź swoją skrzynkę e-mail i kliknij link potwierdzający, aby aktywować konto.',
     email: 'E-mail',
@@ -20,7 +22,7 @@ export const translations = {
     invalidEmail: 'Podaj poprawny adres e-mail.',
     loginRequiredToFetchBuild: 'Aby skorzystać z tej funkcji, musisz się zalogować.',
     fetchBuildError: 'Nie udało się pobrać builda.',
-
+    registerError: 'Błąd rejestracji',
     loginTitle: 'Logowanie',
     loginSubmit: 'Zaloguj',
     logout: 'Wyloguj',
@@ -30,19 +32,19 @@ export const translations = {
     registerNow: 'Zarejestruj się',
     forgotPassword: 'Zapomniałeś hasła?',
     resetPasswordNow: 'Resetuj hasło',
-
+    errorUpdatingUser: 'Error updating user',
     registerTitle: 'Rejestracja',
     registerSubmit: 'Zarejestruj',
     alreadyHaveAccount: 'Masz już konto?',
     loginNow: 'Zaloguj się',
-    registerError: 'Błąd rejestracji',
-
+    c: 'Błąd rejestracji',
+    nameAndEmailCannotBeEmpty: 'Nazwa i adres e-mail nie mogą być puste',
     resetTitle: 'Resetowanie hasła',
     resetSubmit: 'Wyślij link resetujący',
     resetSuccess: 'Jeśli email istnieje, wysłano link do resetu hasła',
     resetError: 'Wystąpił błąd resetowania hasła.',
     rememberPassword: 'Pamiętasz hasło?',
-
+    passwordsDoNotMatch: "Hasła się nie zgadzają",
     dashboardTitle: 'Witaj w panelu użytkownika',
     loggedInAs: 'Jesteś zalogowany jako:',
     yourRole: 'Twoja rola:',
@@ -96,16 +98,34 @@ export const translations = {
     inRotation: 'W rotacji',
     outOfRotation: 'Poza rotacją',
     serverStatusTitle: 'Status Serwera LOL',
+    downloadStatus: 'Pobierz status',
+    loadingStatus: 'Ładowanie statusu',
+    chooseRegion: "Wybierz region",
+    noAuthorization: "Brak autoryzacji",
+    failedToGetServerStatus: "Nie udało się pobrać statusu serwera.",
+    failedToDownloadChampions: "Nie udało się pobrać championów ",
+    errorChangingWhileUsingChampion: "Błąd zmiany podczas korzystania z Championa",
+    couldNotChangeChampionAvailability: "Nie udało się zmienić dostępności championa",
+    pleaseVerifyYour: "Zweryfikuj proszę swój adres e-mail. Po potwierdzeniu będziesz mógł się zalogować",
+    goToLogin: "Przejdź do logowania",
+    passwordMustBe: "Hasło musi mieć co najmniej 6 znaków",
+    errorDuringLogout: "Błąd podczas wylogowania",
+    errorParsingUserFromGoogleOAuth: "Błąd parsowania użytkownika z Google OAuth",
+    failedToParse: "Nie udało się przeanalizować użytkownika z localStorag"
+
   },
 
   en: {
     notifications: "Notifications",
+    loadingNotifications: "Loading notifications",
+    noNotifications: "No notifications",
     registerSuccessTitle: 'Registration completed!',
     registerSuccessDescription: 'Please check your email and click the confirmation link to activate your account.',
     email: 'E-mail',
     password: 'Password',
     confirmPassword: 'Confirm Password',
-
+    passwordsDoNotMatch: 'Passwords do not match',
+    errorUpdatingUser: 'Error updating user',
     logs: 'Logs',
     logsTitle: 'System logs',
     logsLoading: 'Loading logs...',
@@ -168,7 +188,7 @@ export const translations = {
     adminMenuStats: 'Statistics',
     adminMenuUsers: 'Users',
     adminMenuNotifications: 'Notifications',
-
+    nameAndEmailCannotBeEmpty: 'Name and Email cannot be empty',
     usersTitle: 'Manage users',
     usersLoading: 'Loading users...',
     usersError: 'Failed to load users.',
@@ -195,5 +215,19 @@ export const translations = {
     inRotation: 'In rotation',
     outOfRotation: 'Out of rotation',
     serverStatusTitle: 'LOL Server Status',
+    downloadStatus: 'Download status',
+    loadingStatus: 'Loading status',
+    chooseRegion: "Choose region",
+    noAuthorization: "No authorization",
+    failedToGetServerStatus: "Failed to get server status.",
+    failedToDownloadChampions: "Failed to download",
+    errorChangingWhileUsingChampion: "Error changing while using Champion",
+    couldNotChangeChampionAvailability: "Could not change champion availability",
+    pleaseVerifyYour: "Please verify your email address. Once confirmed, you will be able to log in",
+    goToLogin: "Go to login",
+    passwordMustBe: "Password must be at least 6 characters long",
+    errorDuringLogout: "Error during logout",
+    errorParsingUserFromGoogleOAuth: "Error parsing user from Google OAuth",
+    failedToParse: "Failed to parse user from localStorage"
   }
 }

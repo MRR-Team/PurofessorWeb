@@ -42,7 +42,7 @@ onMounted(async () => {
   try {
     stats.value = await fetchCounterStats()
   } catch (err: any) {
-    error.value = err?.message || 'Nie udało się pobrać statystyk.'
+    error.value = err?.message || t.value.statsError
   } finally {
     isLoading.value = false
   }

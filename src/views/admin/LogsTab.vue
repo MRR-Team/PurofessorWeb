@@ -30,7 +30,7 @@ onMounted(async () => {
   try {
     logs.value = await fetchLogs()
   } catch (err: any) {
-    error.value = err?.message || 'Nie udało się pobrać logów.'
+    error.value = err?.message || t.value.logsError
   } finally {
     isLoading.value = false
   }

@@ -73,7 +73,7 @@ const onLogin = async (form: Record<string, string>) => {
 
     await router.push('/dashboard')
   } catch (e: any) {
-    error.value = e.message || 'Wystąpił błąd logowania.'
+    error.value = e.message || t.value.loginError
   } finally {
     isLoading.value = false
   }

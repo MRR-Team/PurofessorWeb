@@ -36,7 +36,7 @@ onMounted(async () => {
     const championsData = await reloadChampions()
     championStore.setChampions(championsData)
   } catch (err) {
-    error.value = 'Nie udało się pobrać championów.'
+    error.value = t.value.failedToDownloadChampions
   } finally {
     isLoading.value = false
   }

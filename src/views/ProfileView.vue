@@ -55,7 +55,7 @@ function startEdit(user: typeof currentUser.value) {
 
 async function saveEdit(userId: number, name: string, email: string, password: string) {
   if (!name.trim() || !email.trim()) {
-    alert('Name and Email cannot be empty!')
+    alert(t.value.nameAndEmailCannotBeEmpty)
     return
   }
 
@@ -73,7 +73,7 @@ async function saveEdit(userId: number, name: string, email: string, password: s
 
     editingUserId.value = null
   } catch (e: any) {
-    alert(e.message || 'Error updating user')
+    alert(e.message || t.value.errorUpdatingUser)
   }
 }
 </script>

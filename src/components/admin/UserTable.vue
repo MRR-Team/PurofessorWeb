@@ -51,7 +51,7 @@ function startEdit(user: User) {
 
 async function saveEdit(userId: number, name: string, email: string, password: string) {
   if (!name.trim() || !email.trim()) {
-    alert('Name and Email cannot be empty!')
+    alert(t.value.nameAndEmailCannotBeEmpty)
     return
   }
 
@@ -65,12 +65,12 @@ async function saveEdit(userId: number, name: string, email: string, password: s
     userStore.updateUser(updatedUser)
     editingUserId.value = null
   } catch (e: any) {
-    alert(e.message || 'Error updating user')
+    alert(e.message || t.value.errorUpdatingUser)
   }
 }
 
 async function deleteUser(userId: number) {
-  if (confirm('Czy na pewno chcesz usunąć użytkownika?')) {
+  if (confirm(t.value.usersDeleteConfirm)) {
     await deleteUserUseCase(userId)
     const usersData = await fetchUsers()
     userStore.setUsers(usersData)

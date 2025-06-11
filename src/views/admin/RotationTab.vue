@@ -54,7 +54,7 @@ onMounted(async () => {
     const championsData = await reloadChampions()
     championStore.setChampions(championsData)
   } catch (err) {
-    error.value = 'Nie udało się pobrać championów.'
+    error.value = t.value.failedToDownloadChampions
   } finally {
     isLoading.value = false
   }
@@ -70,7 +70,7 @@ async function toggleChampionAvailabilityAction(champion: Champion) {
         champion.name,
         champion.position,
         champion.role,
-        !champion.isAvailable, // zmieniamy isAvailable
+        !champion.isAvailable,
         champion.attack_damage,
         champion.magic_damage,
         champion.shield,
@@ -96,8 +96,8 @@ async function toggleChampionAvailabilityAction(champion: Champion) {
       )
     )
   } catch (err) {
-    console.error('Błąd podczas zmiany dostępności championa:', err)
-    alert('Nie udało się zmienić dostępności championa.')
+    console.error(t.value.errorChangingWhileUsingChampion, err)
+    alert(t.value.couldNotChangeChampionAvailability)
   }
 }
 </script>

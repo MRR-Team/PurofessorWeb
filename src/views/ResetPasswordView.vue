@@ -54,7 +54,7 @@ const onReset = async (form: Record<string, string>) => {
     await resetPassword(form.email)
     success.value = true
   } catch (e: any) {
-    error.value = e.message || 'Wystąpił błąd resetowania hasła.'
+    error.value = e.message || t.value.resetError
   } finally {
     isLoading.value = false
   }

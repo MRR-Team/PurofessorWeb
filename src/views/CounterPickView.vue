@@ -81,13 +81,13 @@ async function generateCounterAction() {
     const enemyChampion = getChampionByName(selectedEnemyChampion.value)
 
     if (!enemyChampion) {
-      error.value = 'Nie znaleziono takiego championa.'
+      error.value = t.value.notFoundChampion
       return
     }
 
     counterChampions.value = await generateCounter(selectedRole.value, enemyChampion.id.toString())
   } catch (err) {
-    error.value = 'Nie udało się pobrać kontr.'
+    error.value = t.value.errorCounter
   } finally {
     isLoading.value = false
   }

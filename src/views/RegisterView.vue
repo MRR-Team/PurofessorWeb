@@ -48,7 +48,7 @@ const onRegister = async (form: Record<string, string>) => {
     await register(form.name, form.email, form.password, form.confirmPassword)
     await router.push('/register-success')
   } catch (e: any) {
-    error.value = e.message || 'Błąd rejestracji'
+    error.value = e.message || t.value.resetError
   } finally {
     isLoading.value = false
   }
@@ -58,7 +58,7 @@ const onRegister = async (form: Record<string, string>) => {
     ValidatorUtils.validateName(form.name) ||
     ValidatorUtils.validateEmail(form.email) ||
     ValidatorUtils.validatePassword(form.password) ||
-    (form.password !== form.confirmPassword ? 'Hasła się nie zgadzają.' : null)
+    (form.password !== form.confirmPassword ? t.value.passwordsDoNotMatch : null)
   )
 }
 </script>

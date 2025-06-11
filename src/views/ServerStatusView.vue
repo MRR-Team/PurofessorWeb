@@ -3,16 +3,16 @@
     <h1 class="heading-1 mb-6">{{ t.serverStatusTitle }}</h1>
 
     <div class="mb-4">
-      <label class="font-bold">Wybierz region:</label>
+      <label class="font-bold">{{ t.chooseRegion }}</label>
       <select v-model="selectedRegion" class="input p-2 border rounded ml-2">
         <option value="euw1">EUW</option>
         <option value="na1">NA</option>
         <option value="tr1">TR</option>
       </select>
-      <button @click="loadStatus" class="ml-2 bg-primary text-white px-4 py-2 rounded">Pobierz status</button>
+      <button @click="loadStatus" class="ml-2 bg-primary text-white px-4 py-2 rounded">{{t.downloadStatus}}</button>
     </div>
 
-    <div v-if="isLoading" class="text-body">Ładowanie statusu...</div>
+    <div v-if="isLoading" class="text-body">{{t.loadingStatus}}</div>
     <div v-if="error" class="text-danger">{{ error }}</div>
 
     <div v-if="statusData" class="mt-4 text-left max-w-lg mx-auto bg-bg-card p-4 rounded shadow">
@@ -43,9 +43,9 @@ async function loadStatus() {
     statusData.value = await fetchStatus(selectedRegion.value)
   } catch (err: any) {
     if (err?.response?.status === 401) {
-      error.value = 'Brak autoryzacji.'
+      error.value = t.value.noAuthorization
     } else {
-      error.value = 'Nie udało się pobrać statusu serwera.'
+      error.value = t.value.failedToGetServerStatus
     }
   } finally {
     isLoading.value = false

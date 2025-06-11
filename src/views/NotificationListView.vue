@@ -1,8 +1,8 @@
 <template>
   <div class="max-w-4xl mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-4">Powiadomienia</h1>
+    <h1 class="text-2xl font-bold mb-4">{{t.notifications}}</h1>
 
-    <div v-if="isLoading">Ładowanie powiadomień...</div>
+    <div v-if="isLoading">{{t.loadingNotifications}}</div>
     <div v-else-if="error" class="text-red-600">{{ error }}</div>
 
     <div v-else class="space-y-4">
@@ -33,8 +33,8 @@
 import { onMounted } from 'vue'
 import { useNotificationStore } from '@/stores/notificationStore'
 import {notificationUseCase} from "@/application/usecases/NotificationUseCase.ts";
-
-
+import {useTranslation} from "@/composables/useTranslation.ts";
+const { t } = useTranslation()
 const store = useNotificationStore()
 const { fetchNotifications } = notificationUseCase()
 
